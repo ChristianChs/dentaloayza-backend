@@ -10,12 +10,13 @@ import { SpecialtyService } from './specialty/specialty.service';
 import { SpecialtyController } from './specialty/specialty.controller';
 import { Person } from './person/entities/person.entity';
 import { Specialty } from './specialty/entities/specialty.entity';
+import { Specialist } from './specialist/entities/specialist.entity';
 
 @Module({
   controllers: [PersonController, SpecialistController, SpecialtyController],
   providers: [PersonService, SpecialistService, SpecialtyService],
   imports: [
-    TypeOrmModule.forFeature([Person, Specialty]),
+    TypeOrmModule.forFeature([Person, Specialty, Specialist]),
     RouterModule.register([
       {
         path: 'staff',

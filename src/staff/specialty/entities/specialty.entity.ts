@@ -1,5 +1,6 @@
 import { BaseEntity } from 'src/common/entities/base.entity';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Specialist } from 'src/staff/specialist/entities/specialist.entity';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('especialidades')
 export class Specialty extends BaseEntity {
@@ -17,4 +18,7 @@ export class Specialty extends BaseEntity {
     length: 250,
   })
   descripcion: string;
+
+  @OneToMany(() => Specialist, (specialist) => specialist.especialidad)
+  especialistas: Specialist;
 }

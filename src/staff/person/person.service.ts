@@ -9,6 +9,7 @@ import { Person } from './entities/person.entity';
 import { Repository } from 'typeorm';
 import { CreatePersonDto } from './dto/create-person.dto';
 import { UpdatePersonDto } from './dto/update-person.dto';
+import { plainToInstance } from 'class-transformer';
 
 @Injectable()
 export class PersonService {
@@ -18,7 +19,8 @@ export class PersonService {
   ) {}
 
   async findAll() {
-    return await this.personRepository.find();
+    const data = await this.personRepository.find();
+    return plainToInstance(Person, data);
   }
 
   async findOne(uuid: string) {
@@ -26,14 +28,14 @@ export class PersonService {
     if (!person) {
       throw new NotFoundException(`Persona con uuid ${uuid} no encontrada`);
     }
-    return person;
+    return plainToInstance(Person, person);
   }
 
   async create(createPersonDto: CreatePersonDto) {
     try {
       const person = this.personRepository.create(createPersonDto);
       await this.personRepository.save(person);
-      return person;
+      return plainToInstance(Person, person);
     } catch (error) {
       this.handleExceptionDb(error);
     }

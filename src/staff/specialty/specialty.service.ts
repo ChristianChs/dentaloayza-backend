@@ -7,6 +7,7 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { Specialty } from './entities/specialty.entity';
 import { Repository } from 'typeorm';
+import { plainToInstance } from 'class-transformer';
 
 @Injectable()
 export class SpecialtyService {
@@ -16,7 +17,8 @@ export class SpecialtyService {
   ) {}
 
   async findAll() {
-    return await this.specialtyRepository.find();
+    const data = await this.specialtyRepository.find();
+    return plainToInstance(Specialty, data);
   }
 
   async findOne(uuid: string) {
@@ -28,14 +30,14 @@ export class SpecialtyService {
         `Especialidad con uuid ${uuid} no encontrada`,
       );
     }
-    return specialty;
+    return plainToInstance(Specialty, specialty);
   }
 
   async create(createSpecialtyDto: any) {
     try {
       const specialty = this.specialtyRepository.create(createSpecialtyDto);
       await this.specialtyRepository.save(specialty);
-      return specialty;
+      return plainToInstance(Specialty, specialty);
     } catch (error) {
       this.handleExceptionDb(error);
     }
