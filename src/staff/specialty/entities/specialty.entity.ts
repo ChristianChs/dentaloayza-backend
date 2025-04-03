@@ -20,5 +20,5 @@ export class Specialty extends BaseEntity {
   descripcion: string;
 
   @OneToMany(() => Specialist, (specialist) => specialist.especialidad)
-  especialistas: Specialist;
+  especialistas: Specialist[];
 }
