@@ -7,20 +7,17 @@ import {
   ParseUUIDPipe,
   Patch,
   Post,
-  UseGuards,
 } from '@nestjs/common';
 import { PersonService } from './person.service';
 import { CreatePersonDto } from './dto/create-person.dto';
 import { UpdatePersonDto } from './dto/update-person.dto';
-import { ApiBearerAuth, ApiResponse } from '@nestjs/swagger';
+import { ApiResponse } from '@nestjs/swagger';
 import { plainToInstance } from 'class-transformer';
 import { PersonResponseDto } from './dto';
-import { AuthGuard } from '@nestjs/passport/dist/auth.guard';
+import { ApiAuth } from 'src/common/decorators/api-auth.decorator';
 
 @Controller('person')
-@UseGuards(AuthGuard('jwt'))
-@ApiBearerAuth()
-@ApiResponse({ status: 401, description: 'Unauthorized' })
+@ApiAuth()
 export class PersonController {
   constructor(private readonly personService: PersonService) {}
 
