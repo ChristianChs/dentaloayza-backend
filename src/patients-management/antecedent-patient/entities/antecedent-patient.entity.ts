@@ -7,8 +7,8 @@ import {
   OneToMany,
 } from 'typeorm';
 import { Patient } from '../../patient/entities/patient.entity';
-import { Antecedent } from '../../../catalog/antecedent/entities/antecedent.entity';
-import { AntecedentDetail } from '../antecedent-detail/entities/antecedent-detail.entity';
+import { Antecedent } from '../../catalog/antecedent/entities/antecedent.entity';
+import { AntecedentDetail } from '../../antecedent-detail/entities/antecedent-detail.entity';
 
 @Entity('antecedentepaciente')
 export class AntecedentPatient {

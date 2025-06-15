@@ -5,7 +5,7 @@ import { AntecedentPatient } from './entities/antecedent-patient.entity';
 import { CreateAntecedentPatientDto } from './dto/create-antecedent-patient.dto';
 import { UpdateAntecedentPatientDto } from './dto/update-antecedent-patient.dto';
 import { Patient } from '../patient/entities/patient.entity';
-import { Antecedent } from '../../../catalog/antecedent/entities/antecedent.entity';
+import { Antecedent } from '../../catalog/antecedent/entities/antecedent.entity';
 
 @Injectable()
 export class AntecedentPatientService {
