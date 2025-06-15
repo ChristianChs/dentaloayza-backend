@@ -48,7 +48,7 @@ export default [
       '@typescript-eslint/explicit-module-boundary-types': 'off',
       '@typescript-eslint/no-explicit-any': 'off',
       '@typescript-eslint/no-empty-function': 'warn',
-      'prettier/prettier':['error',{endOfLine:'lf'}],
+      'prettier/prettier': ['error', { endOfLine: 'lf' }],
     },
   },
 ];
