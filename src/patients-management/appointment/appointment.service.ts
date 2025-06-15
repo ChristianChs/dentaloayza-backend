@@ -33,8 +33,13 @@ export class AppointmentService {
       );
     }
     const specialist = await this.specialistRepository.findOneBy({
-      idSpecialist: createAppointmentDto.idSpecialist,
+      uuid: createAppointmentDto.idSpecialist,
     });
+    if (!specialist) {
+      throw new NotFoundException(
+        `Especialista con ID ${createAppointmentDto.idSpecialist} no encontrado`,
+      );
+    }
     if (!specialist) {
       throw new NotFoundException(
         `Especialista con ID ${createAppointmentDto.idSpecialist} no encontrado`,
