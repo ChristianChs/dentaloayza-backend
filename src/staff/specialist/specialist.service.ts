@@ -47,13 +47,16 @@ export class SpecialistService {
 
   async create(createSpecialistDto: CreateSpecialistDto) {
     try {
-      const specialtyExist = await this.specialtyService.findOne(
-        createSpecialistDto.idEspecialidad,
+      const personExist = await this.personService.findOne(
+        createSpecialistDto.uuidPersona,
       );
 
-      const personExist = await this.personService.findOne(
-        createSpecialistDto.idPersona,
-      );
+      let specialtyExist = null;
+      if (createSpecialistDto.idEspecialidad) {
+        specialtyExist = await this.specialtyService.findOne(
+          createSpecialistDto.idEspecialidad,
+        );
+      }
       const specialist = this.specialistRepository.create({
         ...createSpecialistDto,
         persona: personExist,
@@ -64,10 +67,13 @@ export class SpecialistService {
       const { persona, especialidad, ...data } = specialist;
       return {
         ...data,
-        idPersona: personExist.uuid,
-        idEspecialidad: specialtyExist.uuid,
+        uuidPersona: personExist.uuid,
+        uuidEspecialidad: specialtyExist?.uuid || null,
       };
     } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw error;
+      }
       this.handleExceptionDb(error);
     }
   }
@@ -75,13 +81,13 @@ export class SpecialistService {
   async update(uuid: string, updateSpecialistDto: UpdateSpecialistDto) {
     const specialist = await this.findOne(uuid);
 
-    const { idPersona, idEspecialidad, fechaIngreso } = updateSpecialistDto;
+    const { uuidPersona, idEspecialidad, fechaIngreso } = updateSpecialistDto;
 
     let personExist = specialist.persona;
     let specialtyExist = specialist.especialidad;
 
-    if (idPersona) {
-      personExist = await this.personService.findOne(idPersona);
+    if (uuidPersona) {
+      personExist = await this.personService.findOne(uuidPersona);
     }
     if (idEspecialidad) {
       specialtyExist = await this.specialtyService.findOne(idEspecialidad);

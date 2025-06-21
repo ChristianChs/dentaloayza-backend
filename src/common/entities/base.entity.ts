@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import {
   BeforeInsert,
   Column,
@@ -12,29 +13,34 @@ export abstract class BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
+  @ApiProperty()
   @Column('boolean', {
     name: 'is_active',
     default: true,
   })
   isActive: boolean;
 
+  @ApiProperty()
   @Column('varchar', {
     length: 36,
   })
   uuid: string;
 
+  @ApiProperty()
   @CreateDateColumn({
     name: 'created_at',
     type: 'timestamp',
   })
   createdAt: Date;
 
+  @ApiProperty()
   @UpdateDateColumn({
     name: 'updated_at',
     type: 'timestamp',
   })
   updatedAt: Date;
 
+  @ApiProperty()
   @DeleteDateColumn({
     name: 'deleted_at',
     type: 'timestamp',
