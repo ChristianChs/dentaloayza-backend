@@ -22,6 +22,20 @@ export class PersonController {
   constructor(private readonly personService: PersonService) {}
 
   @Post()
+  @ApiResponse({
+    status: 201,
+    description: 'Person successfully created.',
+    type: PersonResponseDto,
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Bad request. Invalid data provided.',
+  })
+  @ApiResponse({
+    status: 409,
+    description: 'Conflict. Person already exists.',
+  })
+  @ApiResponse({ status: 500, description: 'Internal server error.' })
   create(@Body() createPersonDto: CreatePersonDto) {
     return this.personService.create(createPersonDto);
   }

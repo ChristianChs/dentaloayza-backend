@@ -20,7 +20,7 @@ export class PersonResponseDto {
 
   @ApiProperty()
   @Expose()
-  deletedAt: Date | null;;
+  deletedAt: Date | null;
 
   @ApiProperty()
   @Expose()
