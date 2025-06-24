@@ -26,6 +26,6 @@ export class PatientTag {
   patient: Patient;
 
   @ManyToOne(() => Etiqueta, { onDelete: 'CASCADE' })
-  @JoinColumn({ name: 'idEtiqueta', referencedColumnName: 'idEtiqueta' })
+  @JoinColumn({ name: 'idEtiqueta', referencedColumnName: 'uuid' })
   tag: Etiqueta;
 }

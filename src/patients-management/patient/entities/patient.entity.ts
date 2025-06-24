@@ -29,7 +29,7 @@ export class Patient {
   estadoPago: PatientPaymentStatus;
 
   @OneToOne(() => Person, { eager: true, onDelete: 'CASCADE' })
-  @JoinColumn({ name: 'idPersona', referencedColumnName: 'idPersona' })
+  @JoinColumn({ name: 'idPersona', referencedColumnName: 'uuid' })
   persona: Person;
 
   @OneToMany(

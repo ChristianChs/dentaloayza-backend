@@ -28,7 +28,7 @@ export class AntecedentPatient {
   patient: Patient;
 
   @ManyToOne(() => Antecedente, { onDelete: 'CASCADE' })
-  @JoinColumn({ name: 'idAntecedente', referencedColumnName: 'idAntecedente' })
+  @JoinColumn({ name: 'idAntecedente', referencedColumnName: 'uuid' })
   antecedent: Antecedente;
 
   @OneToMany(

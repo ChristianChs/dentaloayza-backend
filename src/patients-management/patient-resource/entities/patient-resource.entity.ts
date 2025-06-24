@@ -16,7 +16,7 @@ export class PatientResource {
   @Column({ type: 'uuid' })
   idPaciente: string;
 
-  @Column({ type: 'uuid' })
+  @Column({ type: 'uuid', nullable: true })
   idSpecialist: string;
 
   @Column({ type: 'varchar', length: 45, nullable: true })
@@ -35,6 +35,6 @@ export class PatientResource {
   patient: Patient;
 
   @ManyToOne(() => Specialist, { onDelete: 'SET NULL' })
-  @JoinColumn({ name: 'idSpecialist', referencedColumnName: 'idSpecialist' })
+  @JoinColumn({ name: 'idSpecialist', referencedColumnName: 'uuid' })
   specialist: Specialist;
 }

@@ -1,13 +1,10 @@
 import { BaseEntity } from 'src/common/entities/base.entity';
 import { Gender, TipoDocumento } from '../enums';
-import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToOne } from 'typeorm';
 import { Specialist } from 'src/staff/specialist/entities/specialist.entity';
 
 @Entity('personas')
 export class Person extends BaseEntity {
-  @PrimaryGeneratedColumn()
-  id: number;
-
   @Column('enum', {
     enum: TipoDocumento,
     default: TipoDocumento.DNI,

@@ -1,20 +1,10 @@
 import { BaseEntity } from 'src/common/entities/base.entity';
 import { Person } from 'src/staff/person/entities/person.entity';
 import { Specialty } from 'src/staff/specialty/entities/specialty.entity';
-import {
-  Column,
-  Entity,
-  JoinColumn,
-  ManyToOne,
-  OneToOne,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToOne } from 'typeorm';
 
 @Entity('especialistas')
 export class Specialist extends BaseEntity {
-  @PrimaryGeneratedColumn()
-  id: number;
-
   @Column('date', {
     name: 'fecha_ingreso',
   })
