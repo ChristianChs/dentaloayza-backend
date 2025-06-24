@@ -24,5 +24,6 @@ import { Specialist } from './specialist/entities/specialist.entity';
       },
     ]),
   ],
+  exports: [PersonService, SpecialistService, TypeOrmModule],
 })
 export class StaffModule {}

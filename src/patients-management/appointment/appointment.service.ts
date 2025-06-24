@@ -6,7 +6,7 @@ import { CreateAppointmentDto } from './dto/create-appointment.dto';
 import { UpdateAppointmentDto } from './dto/update-appointment.dto';
 import { Patient } from '../patient/entities/patient.entity';
 import { Specialist } from '../../staff/specialist/entities/specialist.entity';
-import { AppointmentReason } from '../../catalog/appointment-reason/entities/appointment-reason.entity';
+import { MotivoCita } from '../../catalog/appointment-reason/entities/appointment-reason.entity';
 
 @Injectable()
 export class AppointmentService {
@@ -17,8 +17,8 @@ export class AppointmentService {
     private patientRepository: Repository<Patient>,
     @InjectRepository(Specialist)
     private specialistRepository: Repository<Specialist>,
-    @InjectRepository(AppointmentReason)
-    private appointmentReasonRepository: Repository<AppointmentReason>,
+    @InjectRepository(MotivoCita)
+    private appointmentReasonRepository: Repository<MotivoCita>,
   ) {}
 
   async create(
@@ -46,7 +46,7 @@ export class AppointmentService {
       );
     }
     const appointmentReason = await this.appointmentReasonRepository.findOneBy({
-      idMotivoCita: createAppointmentDto.idMotivoCita,
+      uuid: createAppointmentDto.idMotivoCita,
     });
     if (!appointmentReason) {
       throw new NotFoundException(

@@ -7,7 +7,7 @@ import {
 } from 'typeorm';
 import { Patient } from '../../patient/entities/patient.entity';
 import { Specialist } from '../../../staff/specialist/entities/specialist.entity';
-import { AppointmentReason } from '../../catalog/appointment-reason/entities/appointment-reason.entity';
+import { MotivoCita } from '../../../catalog/appointment-reason/entities/appointment-reason.entity';
 import { AppointmentStatus } from '../../enums/appointment-status.enum';
 
 @Entity('cita')
@@ -50,7 +50,7 @@ export class Appointment {
   @JoinColumn({ name: 'idSpecialist', referencedColumnName: 'idSpecialist' })
   specialist: Specialist;
 
-  @ManyToOne(() => AppointmentReason, { onDelete: 'SET NULL' })
+  @ManyToOne(() => MotivoCita, { onDelete: 'SET NULL' })
   @JoinColumn({ name: 'idMotivoCita', referencedColumnName: 'idMotivoCita' })
-  appointmentReason: AppointmentReason;
+  appointmentReason: MotivoCita;
 }

@@ -6,7 +6,7 @@ import {
   JoinColumn,
 } from 'typeorm';
 import { Patient } from '../../patient/entities/patient.entity';
-import { Tag } from '../../catalog/tag/entities/tag.entity';
+import { Etiqueta } from '../../../catalog/tag/entities/tag.entity';
 
 @Entity('pacientetags')
 export class PatientTag {
@@ -25,7 +25,7 @@ export class PatientTag {
   @JoinColumn({ name: 'idPaciente', referencedColumnName: 'idPaciente' })
   patient: Patient;
 
-  @ManyToOne(() => Tag, { onDelete: 'CASCADE' })
+  @ManyToOne(() => Etiqueta, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'idEtiqueta', referencedColumnName: 'idEtiqueta' })
-  tag: Tag;
+  tag: Etiqueta;
 }

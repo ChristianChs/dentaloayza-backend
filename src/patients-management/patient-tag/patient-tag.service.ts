@@ -5,7 +5,7 @@ import { PatientTag } from './entities/patient-tag.entity';
 import { CreatePatientTagDto } from './dto/create-patient-tag.dto';
 import { UpdatePatientTagDto } from './dto/update-patient-tag.dto';
 import { Patient } from '../patient/entities/patient.entity';
-import { Tag } from '../../catalog/tag/entities/tag.entity';
+import { Etiqueta } from '../../catalog/tag/entities/tag.entity';
 
 @Injectable()
 export class PatientTagService {
@@ -14,8 +14,8 @@ export class PatientTagService {
     private patientTagRepository: Repository<PatientTag>,
     @InjectRepository(Patient)
     private patientRepository: Repository<Patient>,
-    @InjectRepository(Tag)
-    private tagRepository: Repository<Tag>,
+    @InjectRepository(Etiqueta)
+    private tagRepository: Repository<Etiqueta>,
   ) {}
 
   async create(createPatientTagDto: CreatePatientTagDto): Promise<PatientTag> {
@@ -28,7 +28,7 @@ export class PatientTagService {
       );
     }
     const tag = await this.tagRepository.findOneBy({
-      idEtiqueta: createPatientTagDto.idEtiqueta,
+      uuid: createPatientTagDto.idEtiqueta,
     });
     if (!tag) {
       throw new NotFoundException(

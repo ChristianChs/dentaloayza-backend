@@ -4,49 +4,44 @@ import { Repository } from 'typeorm';
 import { PatientResource } from './entities/patient-resource.entity';
 import { CreatePatientResourceDto } from './dto/create-patient-resource.dto';
 import { UpdatePatientResourceDto } from './dto/update-patient-resource.dto';
-import { Patient } from '../patient/entities/patient.entity';
-import { Specialist } from '../../staff/specialist/entities/specialist.entity';
+import { PatientService } from '../patient/patient.service';
+import { SpecialistService } from '../../staff/specialist/specialist.service';
 
 @Injectable()
 export class PatientResourceService {
   constructor(
     @InjectRepository(PatientResource)
     private patientResourceRepository: Repository<PatientResource>,
-    @InjectRepository(Patient)
-    private patientRepository: Repository<Patient>,
-    @InjectRepository(Specialist)
-    private specialistRepository: Repository<Specialist>,
+    private readonly patientService: PatientService,
+    private readonly specialistService: SpecialistService,
   ) {}
 
   async create(
     createPatientResourceDto: CreatePatientResourceDto,
   ): Promise<PatientResource> {
-    const patient = await this.patientRepository.findOneBy({
-      idPaciente: createPatientResourceDto.idPaciente,
-    });
+    const patient = await this.patientService.findOne(
+      createPatientResourceDto.idPaciente,
+    );
     if (!patient) {
       throw new NotFoundException(
         `Paciente con ID ${createPatientResourceDto.idPaciente} no encontrado`,
       );
     }
 
-    const specialist = await this.specialistRepository.findOneBy({
-      uuid: createPatientResourceDto.idSpecialist,
-    });
-    if (!specialist) {
-      throw new NotFoundException(
-        `Especialista con ID ${createPatientResourceDto.idSpecialist} no encontrado`,
-      );
-    }
+    const specialist = await this.specialistService.findOne(
+      createPatientResourceDto.idSpecialist,
+    );
     if (!specialist) {
       throw new NotFoundException(
         `Especialista con ID ${createPatientResourceDto.idSpecialist} no encontrado`,
       );
     }
 
-    const newPatientResource = this.patientResourceRepository.create(
-      createPatientResourceDto,
-    );
+    const newPatientResource = this.patientResourceRepository.create({
+      ...createPatientResourceDto,
+      patient: patient,
+      specialist: specialist,
+    });
     return await this.patientResourceRepository.save(newPatientResource);
   }
 
@@ -82,7 +77,9 @@ export class PatientResourceService {
   }
 
   async remove(id: string): Promise<void> {
-    const result = await this.patientResourceRepository.delete(id);
+    const result = await this.patientResourceRepository.delete({
+      idPacienteRecurso: id,
+    });
     if (result.affected === 0) {
       throw new NotFoundException(
         `Recurso de paciente con ID ${id} no encontrado`,

@@ -5,6 +5,7 @@ import { EnvConfiguration } from './config/env.config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { StaffModule } from './staff/staff.module';
 import { PatientsManagementModule } from './patients-management/patients-management.module';
+import { CatalogModule } from './catalog/catalog.module';
 
 @Module({
   imports: [
@@ -17,7 +18,7 @@ import { PatientsManagementModule } from './patients-management/patients-managem
       useFactory: (configService: ConfigService) => ({
         type: 'mysql',
         host: configService.get('DB_HOST'),
-        port: configService.get('DB_PORT'),
+        port: +configService.get('DB_PORT'),
         username: configService.get('DB_USER'),
         password: configService.get('DB_PASSWORD'),
         database: configService.get('DB_NAME'),
@@ -29,6 +30,7 @@ import { PatientsManagementModule } from './patients-management/patients-managem
     AuthModule,
     StaffModule,
     PatientsManagementModule,
+    CatalogModule,
   ],
 })
 export class AppModule {}
