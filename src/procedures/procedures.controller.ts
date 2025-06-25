@@ -15,7 +15,9 @@ import {
   ProcedureResponseDto,
   UpdateProcedureDto,
 } from './dto';
+import { ApiAuth } from 'src/common/decorators/api-auth.decorator';
 
+@ApiAuth()
 @Controller('procedures')
 export class ProceduresController {
   constructor(private readonly proceduresService: ProceduresService) {}
