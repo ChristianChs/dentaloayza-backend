@@ -5,7 +5,7 @@ import { AntecedentPatient } from './entities/antecedent-patient.entity';
 import { CreateAntecedentPatientDto } from './dto/create-antecedent-patient.dto';
 import { UpdateAntecedentPatientDto } from './dto/update-antecedent-patient.dto';
 import { Patient } from '../patient/entities/patient.entity';
-import { Antecedent } from '../../catalog/antecedent/entities/antecedent.entity';
+import { Antecedente } from '../../catalog/antecedent/entities/antecedent.entity';
 
 @Injectable()
 export class AntecedentPatientService {
@@ -14,8 +14,8 @@ export class AntecedentPatientService {
     private antecedentPatientRepository: Repository<AntecedentPatient>,
     @InjectRepository(Patient)
     private patientRepository: Repository<Patient>,
-    @InjectRepository(Antecedent)
-    private antecedentRepository: Repository<Antecedent>,
+    @InjectRepository(Antecedente)
+    private antecedentRepository: Repository<Antecedente>,
   ) {}
 
   async create(
@@ -30,7 +30,7 @@ export class AntecedentPatientService {
       );
     }
     const antecedent = await this.antecedentRepository.findOneBy({
-      idAntecedente: createAntecedentPatientDto.idAntecedente,
+      uuid: createAntecedentPatientDto.idAntecedente, // <-- ¡CAMBIO CLAVE AQUÍ! Usa 'uuid'
     });
     if (!antecedent) {
       throw new NotFoundException(

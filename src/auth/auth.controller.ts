@@ -15,7 +15,7 @@ export class AuthController {
   // @Auth(ValidRoles.admin)
   @ApiBearerAuth()
   @Post('register')
-  @Auth()
+  //@Auth()
   @ApiResponse({
     status: 201,
     description: 'User successfully registered.',

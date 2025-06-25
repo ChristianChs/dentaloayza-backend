@@ -7,7 +7,7 @@ import {
 } from 'typeorm';
 import { Patient } from '../../patient/entities/patient.entity';
 import { Specialist } from '../../../staff/specialist/entities/specialist.entity';
-import { AppointmentReason } from '../../catalog/appointment-reason/entities/appointment-reason.entity';
+import { MotivoCita } from '../../../catalog/appointment-reason/entities/appointment-reason.entity';
 import { AppointmentStatus } from '../../enums/appointment-status.enum';
 
 @Entity('cita')
@@ -18,10 +18,10 @@ export class Appointment {
   @Column({ type: 'uuid' })
   idPaciente: string;
 
-  @Column({ type: 'uuid' })
+  @Column({ type: 'uuid', nullable: true })
   idSpecialist: string;
 
-  @Column({ type: 'uuid' })
+  @Column({ type: 'uuid', nullable: true })
   idMotivoCita: string;
 
   @Column({ type: 'varchar', length: 45 })
@@ -47,10 +47,10 @@ export class Appointment {
   patient: Patient;
 
   @ManyToOne(() => Specialist, { onDelete: 'SET NULL' })
-  @JoinColumn({ name: 'idSpecialist', referencedColumnName: 'idSpecialist' })
+  @JoinColumn({ name: 'idSpecialist', referencedColumnName: 'uuid' })
   specialist: Specialist;
 
-  @ManyToOne(() => AppointmentReason, { onDelete: 'SET NULL' })
-  @JoinColumn({ name: 'idMotivoCita', referencedColumnName: 'idMotivoCita' })
-  appointmentReason: AppointmentReason;
+  @ManyToOne(() => MotivoCita, { onDelete: 'SET NULL' })
+  @JoinColumn({ name: 'idMotivoCita', referencedColumnName: 'uuid' })
+  appointmentReason: MotivoCita;
 }

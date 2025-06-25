@@ -6,6 +6,7 @@ import {
   DeleteDateColumn,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
+  //Index,
 } from 'typeorm';
 import { v4 as uuid } from 'uuid';
 
@@ -23,7 +24,9 @@ export abstract class BaseEntity {
   @ApiProperty()
   @Column('varchar', {
     length: 36,
+    unique: true,
   })
+  // @Index({ unique: true })
   uuid: string;
 
   @ApiProperty()
@@ -50,6 +53,8 @@ export abstract class BaseEntity {
 
   @BeforeInsert()
   generateUUID() {
-    this.uuid = uuid();
+    if (!this.uuid) {
+      this.uuid = uuid();
+    }
   }
 }

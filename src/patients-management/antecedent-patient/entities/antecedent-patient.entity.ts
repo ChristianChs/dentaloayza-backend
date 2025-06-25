@@ -7,7 +7,7 @@ import {
   OneToMany,
 } from 'typeorm';
 import { Patient } from '../../patient/entities/patient.entity';
-import { Antecedent } from '../../catalog/antecedent/entities/antecedent.entity';
+import { Antecedente } from '../../../catalog/antecedent/entities/antecedent.entity';
 import { AntecedentDetail } from '../../antecedent-detail/entities/antecedent-detail.entity';
 
 @Entity('antecedentepaciente')
@@ -27,9 +27,9 @@ export class AntecedentPatient {
   @JoinColumn({ name: 'idPaciente', referencedColumnName: 'idPaciente' })
   patient: Patient;
 
-  @ManyToOne(() => Antecedent, { onDelete: 'CASCADE' })
-  @JoinColumn({ name: 'idAntecedente', referencedColumnName: 'idAntecedente' })
-  antecedent: Antecedent;
+  @ManyToOne(() => Antecedente, { onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'idAntecedente', referencedColumnName: 'uuid' })
+  antecedent: Antecedente;
 
   @OneToMany(
     () => AntecedentDetail,
