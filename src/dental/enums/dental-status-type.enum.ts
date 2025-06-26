@@ -1,0 +1,7 @@
+export enum DentalStatusType {
+  HEALTHY = 'HEALTHY',
+  CARIES = 'CARIES',
+  MISSING = 'MISSING',
+  RESTORATION = 'RESTORATION',
+  EXTRACTION = 'EXTRACTION',
+}

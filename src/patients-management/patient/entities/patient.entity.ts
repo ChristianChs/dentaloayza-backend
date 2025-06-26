@@ -6,6 +6,7 @@ import {
   JoinColumn,
   OneToMany,
 } from 'typeorm';
+import { ApiProperty } from '@nestjs/swagger';
 import { Person } from '../../../staff/person/entities/person.entity';
 import { PatientResource } from '../../patient-resource/entities/patient-resource.entity';
 import { AntecedentPatient } from '../../antecedent-patient/entities/antecedent-patient.entity';
@@ -15,12 +16,15 @@ import { PatientPaymentStatus } from '../../enums/patient-payment-status.enum';
 
 @Entity('paciente')
 export class Patient {
+  @ApiProperty()
   @PrimaryGeneratedColumn('uuid')
   idPaciente: string;
 
+  @ApiProperty()
   @Column({ type: 'uuid' })
   idPersona: string;
 
+  @ApiProperty({ enum: PatientPaymentStatus })
   @Column({
     type: 'enum',
     enum: PatientPaymentStatus,
@@ -28,25 +32,30 @@ export class Patient {
   })
   estadoPago: PatientPaymentStatus;
 
+  @ApiProperty({ type: () => Person })
   @OneToOne(() => Person, { eager: true, onDelete: 'CASCADE' })
   @JoinColumn({ name: 'idPersona', referencedColumnName: 'uuid' })
   persona: Person;
 
+  @ApiProperty({ type: () => [PatientResource] })
   @OneToMany(
     () => PatientResource,
     (patientResource) => patientResource.patient,
   )
   patientResources: PatientResource[];
 
+  @ApiProperty({ type: () => [AntecedentPatient] })
   @OneToMany(
     () => AntecedentPatient,
     (antecedentPatient) => antecedentPatient.patient,
   )
   antecedentPatients: AntecedentPatient[];
 
+  @ApiProperty({ type: () => [Appointment] })
   @OneToMany(() => Appointment, (appointment) => appointment.patient)
   appointments: Appointment[];
 
+  @ApiProperty({ type: () => [PatientTag] })
   @OneToMany(() => PatientTag, (patientTag) => patientTag.patient)
   patientTags: PatientTag[];
 }
