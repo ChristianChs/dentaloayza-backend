@@ -5,10 +5,10 @@ import { Odontogram } from '../entities/odontogram.entity';
 import { OdontogramDetailedOutputDto } from './dto/odontogram-view.dto';
 
 import { OdontogramFinding } from '../../odontogram-finding/entities/odontogram-finding.entity';
-import { FindingTypeDefinition } from '../../master-data/entities/finding-type-definition.entity'; // CORRECTED PATH
-import { DentalSurfaceTypeDefinition } from '../../master-data/entities/dental-surface-type-definition.entity'; // CORRECTED PATH
+import { FindingTypeDefinition } from '../../master-data/entities/finding-type-definition.entity';
+import { DentalSurfaceTypeDefinition } from '../../master-data/entities/dental-surface-type-definition.entity';
 import { OdontogramFindingSurface } from '../../odontogram-finding-surface/entities/odontogram-finding-surface.entity';
-import { OdontogramFindingServiceEntity } from '../../odontogram-finding-service/entities/odontogram-finding-service.entity'; // CORRECTED NAME AND PATH
+import { OdontogramFindingServiceEntity } from '../../odontogram-finding-service/entities/odontogram-finding-service.entity';
 import { DentalTreatment } from '../../dental-treatment/entities/dental-treatment.entity';
 
 @Injectable()
