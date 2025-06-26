@@ -1,7 +1,9 @@
-import { Entity, Column, ManyToOne, JoinColumn } from 'typeorm';
+import { Entity, Column, ManyToOne, JoinColumn, OneToMany } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 import { BaseEntity } from '../../../common/entities/base.entity';
 import { Patient } from '../../../patients-management/patient/entities/patient.entity';
+import { OdontogramFinding } from '../../odontogram-finding/entities/odontogram-finding.entity';
+
 @Entity('odontograms')
 export class Odontogram extends BaseEntity {
   @ApiProperty()
@@ -20,4 +22,11 @@ export class Odontogram extends BaseEntity {
   @ManyToOne(() => Patient, { eager: false, onDelete: 'CASCADE' })
   @JoinColumn({ name: 'id_paciente', referencedColumnName: 'idPaciente' })
   patient: Patient;
+
+  @OneToMany(
+    () => OdontogramFinding,
+    (odontogramFinding) => odontogramFinding.odontogram,
+    { cascade: true },
+  )
+  odontogramFindings: OdontogramFinding[];
 }

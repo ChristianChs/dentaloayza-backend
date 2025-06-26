@@ -11,4 +11,8 @@ export class CariesDetailDefinition extends BaseEntity {
   @ApiProperty()
   @Column({ nullable: true, length: 255 })
   description: string;
+
+  @ApiProperty()
+  @Column({ nullable: true, length: 10 })
+  abreviatura: string;
 }

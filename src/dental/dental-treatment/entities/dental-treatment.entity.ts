@@ -13,6 +13,10 @@ export class DentalTreatment extends BaseEntity {
   description: string;
 
   @ApiProperty()
+  @Column({ nullable: true, length: 50 })
+  type: string;
+
+  @ApiProperty()
   @Column('decimal', { precision: 10, scale: 2, default: 0.0 })
   price: number;
 }
