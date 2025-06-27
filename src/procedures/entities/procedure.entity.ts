@@ -11,7 +11,7 @@ export class Procedure extends BaseEntity {
     nullable: false,
   })
   denominacion: string;
-  
+
   @ApiProperty()
   @Column('varchar', {
     length: 500,
@@ -19,7 +19,7 @@ export class Procedure extends BaseEntity {
     nullable: false,
   })
   descripcion: string;
-  
+
   @ApiProperty()
   @Column('decimal', {
     name: 'precio_base',
