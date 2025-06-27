@@ -6,6 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { StaffModule } from './staff/staff.module';
 import { PatientsManagementModule } from './patients-management/patients-management.module';
 import { CatalogModule } from './catalog/catalog.module';
+import { ProceduresModule } from './procedures/procedures.module';
 import { DentalModule } from './dental/dental.module';
 
 @Module({
@@ -32,6 +33,7 @@ import { DentalModule } from './dental/dental.module';
     StaffModule,
     PatientsManagementModule,
     CatalogModule,
+    ProceduresModule,
     DentalModule,
   ],
 })
