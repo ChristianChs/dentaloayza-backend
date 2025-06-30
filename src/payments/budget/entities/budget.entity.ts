@@ -1,6 +1,14 @@
 import { BaseEntity } from 'src/common/entities/base.entity';
+import { BudgetItem } from 'src/payments/budget-item/entities/budget-item.entity';
 import { Specialist } from 'src/staff/specialist/entities/specialist.entity';
-import { BeforeInsert, Column, Entity, ManyToOne } from 'typeorm';
+import {
+  BeforeInsert,
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+} from 'typeorm';
 
 @Entity()
 export class Budget extends BaseEntity {
@@ -31,7 +39,11 @@ export class Budget extends BaseEntity {
   nota: string;
 
   @ManyToOne(() => Specialist, (especialista) => especialista.budget)
+  @JoinColumn({ name: 'id_especialista' })
   especialista: Specialist;
+
+  @OneToMany(() => BudgetItem, (item) => item.budget)
+  items: BudgetItem[];
 
   @BeforeInsert()
   generateCodigo() {

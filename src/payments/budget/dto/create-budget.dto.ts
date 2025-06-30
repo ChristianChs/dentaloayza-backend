@@ -1,10 +1,11 @@
-import { IsEnum, IsString, IsUUID } from 'class-validator';
+import { IsEnum, IsOptional, IsString, IsUUID } from 'class-validator';
 
 export class CreateBudgetDto {
   @IsString()
   nombre: string;
 
   @IsString()
+  @IsOptional()
   nota?: string;
 
   @IsString()

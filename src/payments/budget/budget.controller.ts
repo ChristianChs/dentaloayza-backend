@@ -5,7 +5,7 @@ import {
   Body,
   Patch,
   Param,
-  Delete,
+  ParseUUIDPipe,
 } from '@nestjs/common';
 import { BudgetService } from './budget.service';
 import { CreateBudgetDto } from './dto/create-budget.dto';
@@ -25,18 +25,16 @@ export class BudgetController {
     return this.budgetService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.budgetService.findOne(+id);
+  @Get(':uuid')
+  findOne(@Param('uuid', ParseUUIDPipe) uuid: string) {
+    return this.budgetService.findOne(uuid);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateBudgetDto: UpdateBudgetDto) {
-    return this.budgetService.update(+id, updateBudgetDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.budgetService.remove(+id);
+  @Patch(':uuid')
+  update(
+    @Param('uuid', ParseUUIDPipe) uuid: string,
+    @Body() updateBudgetDto: UpdateBudgetDto,
+  ) {
+    return this.budgetService.update(uuid, updateBudgetDto);
   }
 }
