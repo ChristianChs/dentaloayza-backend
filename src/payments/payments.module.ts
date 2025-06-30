@@ -14,11 +14,26 @@ import { Budget } from './budget/entities/budget.entity';
 import { BudgetItem } from './budget-item/entities/budget-item.entity';
 import { Payment } from './payment/entities/payment.entity';
 import { StaffModule } from 'src/staff/staff.module';
+import { ProceduresModule } from 'src/procedures/procedures.module';
+import { PaymentItem } from './payment-item/entities/payment-item.entity';
+import { PaymentItemController } from './payment-item/payment-item.controller';
+import { PaymentItemService } from './payment-item/payment-item.service';
+
 @Module({
-  controllers: [BudgetController, BudgetItemController, PaymentController],
-  providers: [BudgetService, BudgetItemService, PaymentService],
+  controllers: [
+    BudgetController,
+    BudgetItemController,
+    PaymentController,
+    PaymentItemController,
+  ],
+  providers: [
+    BudgetService,
+    BudgetItemService,
+    PaymentService,
+    PaymentItemService,
+  ],
   imports: [
-    TypeOrmModule.forFeature([Budget, BudgetItem, Payment]),
+    TypeOrmModule.forFeature([Budget, BudgetItem, Payment, PaymentItem]),
     RouterModule.register([
       {
         path: 'payments',
@@ -26,6 +41,7 @@ import { StaffModule } from 'src/staff/staff.module';
       },
     ]),
     StaffModule,
+    ProceduresModule,
   ],
 })
 export class PaymentsModule {}

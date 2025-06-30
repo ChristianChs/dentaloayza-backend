@@ -40,7 +40,7 @@ export class BudgetItem extends BaseEntity {
   @JoinColumn({ name: 'id_procedimiento' })
   procedure: Procedure;
 
-  @OneToMany(() => PaymentItem, (item) => item.procedimiento)
+  @OneToMany(() => PaymentItem, (item) => item.presupuestoItem)
   pagoItems: PaymentItem[];
 
   calculateSubtotal() {
