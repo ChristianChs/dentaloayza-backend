@@ -1,6 +1,15 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  ParseUUIDPipe,
+} from '@nestjs/common';
 import { BudgetItemService } from './budget-item.service';
-import { CreateBudgetItemDto } from './dto/create-budget-item.dto';
+import { CreateBudgetItemsDto } from './dto/create-budget-item.dto';
 import { UpdateBudgetItemDto } from './dto/update-budget-item.dto';
 
 @Controller('budget-item')
@@ -8,27 +17,25 @@ export class BudgetItemController {
   constructor(private readonly budgetItemService: BudgetItemService) {}
 
   @Post()
-  create(@Body() createBudgetItemDto: CreateBudgetItemDto) {
-    return this.budgetItemService.create(createBudgetItemDto);
+  create(@Body() createBudgetItemsDto: CreateBudgetItemsDto) {
+    return this.budgetItemService.createBulk(createBudgetItemsDto.items);
   }
 
-  @Get()
-  findAll() {
-    return this.budgetItemService.findAll();
+  @Get(':uuid')
+  findOne(@Param('uuid', ParseUUIDPipe) uuid: string) {
+    return this.budgetItemService.findOne(uuid);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.budgetItemService.findOne(+id);
+  @Patch(':uuid')
+  update(
+    @Param('uuid', ParseUUIDPipe) uuid: string,
+    @Body() updateBudgetItemDto: UpdateBudgetItemDto,
+  ) {
+    return this.budgetItemService.update(uuid, updateBudgetItemDto);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateBudgetItemDto: UpdateBudgetItemDto) {
-    return this.budgetItemService.update(+id, updateBudgetItemDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.budgetItemService.remove(+id);
+  @Delete(':uuid')
+  remove(@Param('uuid', ParseUUIDPipe) uuid: string) {
+    return this.budgetItemService.remove(uuid);
   }
 }
