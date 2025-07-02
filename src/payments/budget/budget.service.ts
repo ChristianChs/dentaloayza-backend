@@ -12,12 +12,16 @@ import { Repository } from 'typeorm';
 import { SpecialistService } from 'src/staff/specialist/specialist.service';
 import { BudgetItem } from '../budget-item/entities/budget-item.entity';
 import { ProceduresService } from 'src/procedures/procedures.service';
+import { Patient } from 'src/patients-management/patient/entities/patient.entity';
 
 @Injectable()
 export class BudgetService {
   constructor(
     @InjectRepository(Budget)
     private budgetRepository: Repository<Budget>,
+
+    @InjectRepository(Patient)
+    private readonly patientRepository: Repository<Patient>,
 
     private readonly specialistRepository: SpecialistService,
 
@@ -29,9 +33,22 @@ export class BudgetService {
       const specialist = await this.specialistRepository.findOne(
         createBudgetDto.idEspecialista,
       );
+
+      const patient = await this.patientRepository.findOne({
+        where: { idPaciente: createBudgetDto.idPaciente },
+        relations: ['persona'],
+      });
+
+      if (!patient) {
+        throw new NotFoundException(
+          `Paciente con ID ${createBudgetDto.idPaciente} no encontrado`,
+        );
+      }
+
       const budget = this.budgetRepository.create({
         ...createBudgetDto,
         especialista: specialist,
+        paciente: patient,
       });
       await this.budgetRepository.save(budget);
       const { especialista, ...data } = budget;
@@ -78,6 +95,43 @@ export class BudgetService {
               0,
             ) || 0,
           pagoItems: undefined, // Opcional: remover pagoItems del resultado final
+        })) || [],
+    }));
+  }
+
+  async findByPatient(uuid: string) {
+    const queryBuilder = this.budgetRepository
+      .createQueryBuilder('budget')
+      .leftJoinAndSelect('budget.especialista', 'especialista')
+      .leftJoinAndSelect('especialista.persona', 'persona')
+      .leftJoinAndSelect('budget.paciente', 'paciente')
+      .leftJoinAndSelect('paciente.persona', 'pacientePersona')
+      .leftJoinAndSelect('budget.items', 'items')
+      .leftJoinAndSelect('items.procedure', 'procedure')
+      .leftJoinAndSelect('items.pagoItems', 'pagoItems')
+      .where('paciente.idPaciente = :uuid', { uuid });
+
+    // if (!includeInactive) {
+    //   queryBuilder
+    //     .andWhere('budget.estado != :estado', { estado: 'Cancelado' })
+    //     .andWhere('(items.id IS NULL OR items.isActive = :isActive)', {
+    //       isActive: true,
+    //     });
+    // }
+
+    const budgets = await queryBuilder.getMany();
+
+    return budgets.map((budget) => ({
+      ...budget,
+      items:
+        budget.items?.map((item) => ({
+          ...item,
+          montoPagado:
+            item.pagoItems?.reduce(
+              (sum, pagoItem) => sum + Number(pagoItem.montoAbonado),
+              0,
+            ) || 0,
+          // pagoItems: undefined,
         })) || [],
     }));
   }

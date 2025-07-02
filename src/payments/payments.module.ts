@@ -18,6 +18,7 @@ import { ProceduresModule } from 'src/procedures/procedures.module';
 import { PaymentItem } from './payment-item/entities/payment-item.entity';
 import { PaymentItemController } from './payment-item/payment-item.controller';
 import { PaymentItemService } from './payment-item/payment-item.service';
+import { Patient } from 'src/patients-management/patient/entities/patient.entity';
 
 @Module({
   controllers: [
@@ -33,7 +34,13 @@ import { PaymentItemService } from './payment-item/payment-item.service';
     PaymentItemService,
   ],
   imports: [
-    TypeOrmModule.forFeature([Budget, BudgetItem, Payment, PaymentItem]),
+    TypeOrmModule.forFeature([
+      Budget,
+      BudgetItem,
+      Payment,
+      PaymentItem,
+      Patient,
+    ]),
     RouterModule.register([
       {
         path: 'payments',

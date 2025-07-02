@@ -24,6 +24,12 @@ export class BudgetController {
   findAll() {
     return this.budgetService.findAll();
   }
+
+  @Get('by-patient/:uuid')
+  findByPatient(@Param('uuid', ParseUUIDPipe) uuid: string) {
+    return this.budgetService.findByPatient(uuid);
+  }
+
   @Get('combos')
   findCombos() {
     return this.budgetService.findCombos();

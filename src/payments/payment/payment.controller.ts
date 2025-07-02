@@ -23,6 +23,11 @@ export class PaymentController {
     return this.paymentService.findAll();
   }
 
+  @Get('by-patient/:uuid')
+  findByPatient(@Param('uuid', ParseUUIDPipe) uuid: string) {
+    return this.paymentService.findByPatient(uuid);
+  }
+
   @Get(':uuid')
   findOne(@Param('uuid', ParseUUIDPipe) uuid: string) {
     return this.paymentService.findOne(uuid);

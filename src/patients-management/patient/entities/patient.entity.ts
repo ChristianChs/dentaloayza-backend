@@ -13,6 +13,8 @@ import { AntecedentPatient } from '../../antecedent-patient/entities/antecedent-
 import { Appointment } from '../../appointment/entities/appointment.entity';
 import { PatientTag } from '../../patient-tag/entities/patient-tag.entity';
 import { PatientPaymentStatus } from '../../enums/patient-payment-status.enum';
+import { Budget } from 'src/payments/budget/entities/budget.entity';
+import { Payment } from 'src/payments/payment/entities/payment.entity';
 
 @Entity('paciente')
 export class Patient {
@@ -58,4 +60,10 @@ export class Patient {
   @ApiProperty({ type: () => [PatientTag] })
   @OneToMany(() => PatientTag, (patientTag) => patientTag.patient)
   patientTags: PatientTag[];
+
+  @OneToMany(() => Budget, (budget) => budget.paciente)
+  budgets: Budget[];
+
+  @OneToMany(() => Payment, (payment) => payment.paciente)
+  payments: Payment[];
 }

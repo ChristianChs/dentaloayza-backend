@@ -29,4 +29,7 @@ export class CreatePaymentDto {
 
   @IsUUID()
   uuidEspecialista: string;
+
+  @IsUUID()
+  uuidPaciente: string;
 }

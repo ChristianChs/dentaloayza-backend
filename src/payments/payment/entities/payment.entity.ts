@@ -3,6 +3,7 @@ import { PaymentItem } from 'src/payments/payment-item/entities/payment-item.ent
 import { Specialist } from 'src/staff/specialist/entities/specialist.entity';
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
 import { MetodoPago, TipoComprobante } from '../enum';
+import { Patient } from 'src/patients-management/patient/entities/patient.entity';
 
 @Entity()
 export class Payment extends BaseEntity {
@@ -35,6 +36,10 @@ export class Payment extends BaseEntity {
   @ManyToOne(() => Specialist, { nullable: false })
   @JoinColumn({ name: 'id_especialista' })
   especialista: Specialist;
+
+  @ManyToOne(() => Patient, (patient) => patient.payments, { nullable: false })
+  @JoinColumn({ name: 'id_paciente', referencedColumnName: 'idPaciente' })
+  paciente: Patient;
 
   @OneToMany(() => PaymentItem, (item) => item.pago, { nullable: false })
   items: PaymentItem[];

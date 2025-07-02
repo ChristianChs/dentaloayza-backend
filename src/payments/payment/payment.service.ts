@@ -9,12 +9,16 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Payment } from './entities/payment.entity';
 import { Repository } from 'typeorm';
 import { SpecialistService } from 'src/staff/specialist/specialist.service';
+import { Patient } from 'src/patients-management/patient/entities/patient.entity';
 
 @Injectable()
 export class PaymentService {
   constructor(
     @InjectRepository(Payment)
     private readonly paymentRepository: Repository<Payment>,
+
+    @InjectRepository(Patient)
+    private readonly patientRepository: Repository<Patient>,
 
     private readonly specialistService: SpecialistService,
   ) {}
@@ -24,9 +28,21 @@ export class PaymentService {
       const specialistExist = await this.specialistService.findOne(
         createPaymentDto.uuidEspecialista,
       );
+      const patient = await this.patientRepository.findOne({
+        where: { idPaciente: createPaymentDto.uuidPaciente },
+        relations: ['persona'],
+      });
+
+      if (!patient) {
+        throw new NotFoundException(
+          `Paciente con ID ${createPaymentDto.uuidPaciente} no encontrado`,
+        );
+      }
+
       const payment = this.paymentRepository.create({
         ...createPaymentDto,
         especialista: specialistExist,
+        paciente: patient,
       });
       await this.paymentRepository.save(payment);
       const { especialista, ...data } = payment;
@@ -49,6 +65,19 @@ export class PaymentService {
       .leftJoinAndSelect('especialista.persona', 'persona')
       .leftJoinAndSelect('payment.items', 'items');
     return queryBuilder.getMany();
+  }
+
+  async findByPatient(uuid: string) {
+    // obtener igual que findall pero filtrando por paciente
+    const queryBuilder = this.paymentRepository
+      .createQueryBuilder('payment')
+      .leftJoinAndSelect('payment.especialista', 'especialista')
+      .leftJoinAndSelect('especialista.persona', 'persona')
+      .leftJoinAndSelect('payment.paciente', 'paciente') // ✅ Agregar JOIN con paciente
+      .leftJoinAndSelect('paciente.persona', 'pacientePersona') // ✅ JOIN con persona del paciente
+      .leftJoinAndSelect('payment.items', 'items')
+      .where('paciente.idPaciente = :uuid', { uuid });
+    return await queryBuilder.getMany();
   }
 
   async findOne(uuid: string) {

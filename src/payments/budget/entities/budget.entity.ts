@@ -1,4 +1,5 @@
 import { BaseEntity } from 'src/common/entities/base.entity';
+import { Patient } from 'src/patients-management/patient/entities/patient.entity';
 import { BudgetItem } from 'src/payments/budget-item/entities/budget-item.entity';
 import { Specialist } from 'src/staff/specialist/entities/specialist.entity';
 import {
@@ -41,6 +42,10 @@ export class Budget extends BaseEntity {
   @ManyToOne(() => Specialist, (especialista) => especialista.budget)
   @JoinColumn({ name: 'id_especialista' })
   especialista: Specialist;
+
+  @ManyToOne(() => Patient, (patient) => patient.budgets, { nullable: false })
+  @JoinColumn({ name: 'id_paciente', referencedColumnName: 'idPaciente' })
+  paciente: Patient;
 
   @OneToMany(() => BudgetItem, (item) => item.budget)
   items: BudgetItem[];

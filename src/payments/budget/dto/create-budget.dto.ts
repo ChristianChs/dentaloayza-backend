@@ -15,4 +15,8 @@ export class CreateBudgetDto {
   @IsString()
   @IsUUID()
   idEspecialista: string;
+
+  @IsString()
+  @IsUUID()
+  idPaciente: string;
 }
