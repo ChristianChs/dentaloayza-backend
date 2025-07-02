@@ -43,7 +43,12 @@ export class PaymentService {
   }
 
   async findAll() {
-    return this.paymentRepository.find();
+    const queryBuilder = this.paymentRepository
+      .createQueryBuilder('payment')
+      .leftJoinAndSelect('payment.especialista', 'especialista')
+      .leftJoinAndSelect('especialista.persona', 'persona')
+      .leftJoinAndSelect('payment.items', 'items');
+    return queryBuilder.getMany();
   }
 
   async findOne(uuid: string) {

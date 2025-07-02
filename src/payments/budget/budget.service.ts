@@ -11,6 +11,7 @@ import { Budget } from './entities/budget.entity';
 import { Repository } from 'typeorm';
 import { SpecialistService } from 'src/staff/specialist/specialist.service';
 import { BudgetItem } from '../budget-item/entities/budget-item.entity';
+import { ProceduresService } from 'src/procedures/procedures.service';
 
 @Injectable()
 export class BudgetService {
@@ -19,6 +20,8 @@ export class BudgetService {
     private budgetRepository: Repository<Budget>,
 
     private readonly specialistRepository: SpecialistService,
+
+    private readonly procedureRepository: ProceduresService,
   ) {}
 
   async create(createBudgetDto: CreateBudgetDto) {
@@ -163,6 +166,26 @@ export class BudgetService {
     });
   }
 
+  async findCombos() {
+    const specialists = await this.specialistRepository.findAll();
+    const procedures = await this.procedureRepository.findAll();
+    return {
+      specialists: specialists.map((specialist) => ({
+        uuid: specialist.uuid,
+        nombreCompleto:
+          specialist.persona.nombre +
+          ' ' +
+          specialist.persona.apellidoPaterno +
+          ' ' +
+          specialist.persona.apellidoMaterno,
+      })),
+      procedures: procedures.map((procedure) => ({
+        uuid: procedure.uuid,
+        nombre: procedure.denominacion,
+        precio: procedure.precioBase,
+      })),
+    };
+  }
   private handleExceptionDb(error: any) {
     if (error.code === 'ER_DUP_ENTRY')
       throw new ConflictException(`El registro ya existe en la base de datos`);

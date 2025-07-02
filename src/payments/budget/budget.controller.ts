@@ -24,6 +24,10 @@ export class BudgetController {
   findAll() {
     return this.budgetService.findAll();
   }
+  @Get('combos')
+  findCombos() {
+    return this.budgetService.findCombos();
+  }
 
   @Get(':uuid')
   findOne(@Param('uuid', ParseUUIDPipe) uuid: string) {
