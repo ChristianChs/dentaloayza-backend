@@ -1,0 +1,22 @@
+import { IsEnum, IsOptional, IsString, IsUUID } from 'class-validator';
+
+export class CreateBudgetDto {
+  @IsString()
+  nombre: string;
+
+  @IsString()
+  @IsOptional()
+  nota?: string;
+
+  @IsString()
+  @IsEnum(['Creado', 'Pagado', 'Cancelado'])
+  estado?: 'Creado' | 'Pagado' | 'Cancelado';
+
+  @IsString()
+  @IsUUID()
+  idEspecialista: string;
+
+  @IsString()
+  @IsUUID()
+  idPaciente: string;
+}

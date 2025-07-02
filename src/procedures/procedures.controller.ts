@@ -103,7 +103,8 @@ export class ProceduresController {
   @ApiResponse({ status: 500, description: 'Internal server error.' })
   @ApiResponse({
     status: 409,
-    description: 'Conflict error, e.g., procedure cannot be deleted due to dependencies.',
+    description:
+      'Conflict error, e.g., procedure cannot be deleted due to dependencies.',
   })
   remove(@Param('uuid', ParseUUIDPipe) uuid: string) {
     return this.proceduresService.remove(uuid);

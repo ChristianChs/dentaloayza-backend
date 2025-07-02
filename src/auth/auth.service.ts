@@ -20,6 +20,7 @@ import {
 } from './dto';
 import { JwtPayload } from './interfaces';
 import { Rol, User } from './entities';
+import { SpecialistService } from 'src/staff/specialist/specialist.service';
 
 @Injectable()
 export class AuthService {
@@ -30,14 +31,30 @@ export class AuthService {
     private readonly rolRepository: Repository<Rol>,
 
     private readonly jwtService: JwtService,
+
+    private readonly specialistService: SpecialistService,
   ) {}
   // SECCIÓN USUARIOS
   async register(createUserDto: CreateUserDto) {
-    const { password, ...data } = createUserDto;
     try {
+      const specialist = await this.specialistService.findOne(
+        createUserDto.uuidEspecialista,
+      );
+
+      const existingUser = await this.userRepository.findOne({
+        where: { specialist: { uuid: createUserDto.uuidEspecialista } },
+      });
+      if (existingUser) {
+        throw new ConflictException(
+          `Ya existe un usuario asociado al especialista con UUID ${createUserDto.uuidEspecialista}`,
+        );
+      }
+      const { password, ...data } = createUserDto;
+
       const user = this.userRepository.create({
         ...data,
         password: bcrypt.hashSync(password, 10),
+        specialist,
       });
       await this.userRepository.save(user);
       delete user.password;
@@ -51,14 +68,24 @@ export class AuthService {
     const { username, password } = loginUserDto;
     const user = await this.userRepository.findOne({
       where: { username },
-      select: ['uuid', 'username', 'email', 'password'],
     });
+
     if (!user) throw new UnauthorizedException('Credenciales inválidas');
     if (!bcrypt.compareSync(password, user.password))
       throw new UnauthorizedException('Credenciales inválidas');
     delete user.password;
+    const specialist = await this.specialistService.findByUserUuid(user.uuid);
     return {
       ...user,
+      specialist: {
+        uuid: specialist.uuid,
+        name:
+          specialist.persona.nombre +
+          ' ' +
+          specialist.persona.apellidoPaterno +
+          ' ' +
+          specialist.persona.apellidoMaterno,
+      },
       token: this.getJwtToken({ id: user.uuid }),
     };
   }
