@@ -2,13 +2,20 @@ import {
   BeforeInsert,
   Column,
   Entity,
-  ManyToOne,
+  JoinColumn,
+  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { v4 as uuid } from 'uuid';
-import { Rol } from './role.entity';
 import { Exclude } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
+import { Specialist } from 'src/staff/specialist/entities/specialist.entity';
+
+export enum UserRole {
+  ADMINISTRADOR = 'Administrador',
+  DOCTOR = 'Doctor',
+  SECRETARIA = 'Secretaria',
+}
 
 @Entity('usuarios')
 export class User {
@@ -48,8 +55,18 @@ export class User {
   })
   isActive: boolean;
 
-  @ManyToOne(() => Rol, (rol) => rol.user)
-  rol: string;
+  @Column('enum', {
+    enum: UserRole,
+    nullable: false,
+    default: UserRole.SECRETARIA,
+  })
+  rol: UserRole;
+
+  @OneToOne(() => Specialist, (specialist) => specialist.user, {
+    nullable: true,
+  })
+  @JoinColumn({ name: 'id_especialista' })
+  specialist?: Specialist;
 
   @BeforeInsert()
   generateUUID() {

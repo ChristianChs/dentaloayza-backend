@@ -8,6 +8,7 @@ import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { Rol, User } from './entities';
+import { StaffModule } from 'src/staff/staff.module';
 
 @Module({
   controllers: [AuthController],
@@ -24,6 +25,7 @@ import { Rol, User } from './entities';
       inject: [ConfigService],
     }),
     ConfigModule,
+    StaffModule,
   ],
   exports: [TypeOrmModule, JwtStrategy, PassportModule, JwtModule],
 })

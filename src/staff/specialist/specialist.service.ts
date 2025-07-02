@@ -123,7 +123,20 @@ export class SpecialistService {
       this.handleExceptionDb(error);
     }
   }
+  async findByUserUuid(userUuid: string) {
+    const specialist = await this.specialistRepository.findOne({
+      where: { user: { uuid: userUuid } },
+      relations: ['persona', 'especialidad', 'user'],
+    });
 
+    if (!specialist) {
+      throw new NotFoundException(
+        `No se encontró especialista asociado al usuario con UUID ${userUuid}`,
+      );
+    }
+
+    return plainToInstance(Specialist, specialist);
+  }
   // SECCIÓN PRIVADA
   private handleExceptionDb(error: any) {
     console.log(error);
