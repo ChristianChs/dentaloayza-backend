@@ -46,6 +46,13 @@ export class AppointmentController {
     return this.appointmentService.findAll();
   }
 
+  @Get('combos')
+  @ApiOperation({ summary: 'Obtiene datos para combos' })
+  @ApiResponse({ status: HttpStatus.OK })
+  getCombos() {
+    return this.appointmentService.getCombos();
+  }
+
   @Get(':id')
   @ApiOperation({ summary: 'Obtiene una cita por su ID' })
   @ApiParam({ name: 'id', type: String })
