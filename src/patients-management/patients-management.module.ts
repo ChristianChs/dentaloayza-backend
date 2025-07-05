@@ -28,6 +28,7 @@ import { PatientTagService } from './patient-tag/patient-tag.service';
 // IMPORTA LOS MÓDULOS DE LOS CUALES DEPENDES (PARA OBTENER SERVICIOS/ENTIDADES EXPORTADAS)
 import { StaffModule } from '../staff/staff.module'; // <-- ¡Añade esto!
 import { CatalogModule } from '../catalog/catalog.module'; // <-- ¡Añade esto!
+import { ProceduresModule } from 'src/procedures/procedures.module';
 
 @Module({
   imports: [
@@ -42,6 +43,7 @@ import { CatalogModule } from '../catalog/catalog.module'; // <-- ¡Añade esto!
     ]),
     StaffModule, // <-- ¡Importa StaffModule para acceder a PersonService!
     CatalogModule, // <-- ¡Importa CatalogModule para acceder a Antecedente, MotivoCita, Etiqueta y sus servicios!
+    ProceduresModule,
   ],
   controllers: [
     PatientController,

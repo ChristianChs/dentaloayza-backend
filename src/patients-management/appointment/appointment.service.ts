@@ -7,6 +7,7 @@ import { UpdateAppointmentDto } from './dto/update-appointment.dto';
 import { Patient } from '../patient/entities/patient.entity';
 import { Specialist } from '../../staff/specialist/entities/specialist.entity';
 import { MotivoCita } from '../../catalog/appointment-reason/entities/appointment-reason.entity';
+import { ProceduresService } from 'src/procedures/procedures.service';
 
 @Injectable()
 export class AppointmentService {
@@ -19,6 +20,8 @@ export class AppointmentService {
     private specialistRepository: Repository<Specialist>,
     @InjectRepository(MotivoCita)
     private appointmentReasonRepository: Repository<MotivoCita>,
+
+    private readonly procedureService: ProceduresService,
   ) {}
 
   async create(
@@ -90,5 +93,35 @@ export class AppointmentService {
     if (result.affected === 0) {
       throw new NotFoundException(`Cita con ID ${id} no encontrada`);
     }
+  }
+
+  async getCombos() {
+    const patients = await this.patientRepository.find();
+    const specialists = await this.specialistRepository.find({
+      relations: ['persona'],
+      where: { isActive: true },
+    });
+    const appointmentReasons = await this.appointmentReasonRepository.find();
+
+    const procedures = await this.procedureService.findAll();
+
+    return {
+      patients: patients.map((patient) => ({
+        id: patient.idPaciente,
+        name: `${patient.persona?.nombre} ${patient.persona?.apellidoPaterno} ${patient.persona?.apellidoMaterno}`,
+      })),
+      specialists: specialists.map((specialist) => ({
+        id: specialist.uuid,
+        name: `${specialist.persona?.nombre} ${specialist.persona?.apellidoPaterno} ${specialist.persona?.apellidoMaterno}`,
+      })),
+      appointmentReasons: appointmentReasons.map((reason) => ({
+        id: reason.uuid,
+        name: reason.name,
+      })),
+      procedures: procedures.map((procedure) => ({
+        id: procedure.uuid,
+        name: procedure.denominacion,
+      })),
+    };
   }
 }
