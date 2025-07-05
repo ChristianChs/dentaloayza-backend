@@ -19,25 +19,41 @@ export class PatientTagService {
   ) {}
 
   async create(createPatientTagDto: CreatePatientTagDto): Promise<PatientTag> {
-    const patient = await this.patientRepository.findOneBy({
-      idPaciente: createPatientTagDto.idPaciente,
-    });
-    if (!patient) {
-      throw new NotFoundException(
-        `Paciente con ID ${createPatientTagDto.idPaciente} no encontrado`,
-      );
-    }
-    const tag = await this.tagRepository.findOneBy({
-      uuid: createPatientTagDto.idEtiqueta,
-    });
-    if (!tag) {
-      throw new NotFoundException(
-        `Etiqueta con ID ${createPatientTagDto.idEtiqueta} no encontrada`,
-      );
-    }
+    try {
+      const patient = await this.patientRepository.findOneBy({
+        idPaciente: createPatientTagDto.idPaciente,
+      });
+      if (!patient) {
+        throw new NotFoundException(
+          `Paciente con ID ${createPatientTagDto.idPaciente} no encontrado`,
+        );
+      }
 
-    const newPatientTag = this.patientTagRepository.create(createPatientTagDto);
-    return await this.patientTagRepository.save(newPatientTag);
+      const tag = await this.tagRepository.findOneBy({
+        uuid: createPatientTagDto.idEtiqueta,
+      });
+      if (!tag) {
+        throw new NotFoundException(
+          `Etiqueta con ID ${createPatientTagDto.idEtiqueta} no encontrada`,
+        );
+      }
+
+      const newPatientTag =
+        this.patientTagRepository.create(createPatientTagDto);
+      const savedTag = await this.patientTagRepository.save(newPatientTag);
+
+      const resultado = await this.patientTagRepository.findOne({
+        where: { idPacienteEtiqueta: savedTag.idPacienteEtiqueta },
+        relations: ['patient', 'tag'],
+      });
+
+      console.log('Objeto final que se devuelve:', resultado);
+
+      return resultado;
+    } catch (error) {
+      console.error('Error real en el backend:', error);
+      throw error;
+    }
   }
 
   async findAll(): Promise<PatientTag[]> {

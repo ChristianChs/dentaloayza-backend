@@ -1,6 +1,12 @@
-import { IsUUID, IsEnum, IsNotEmpty } from 'class-validator';
+import {
+  IsUUID,
+  IsEnum,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
-import { PatientPaymentStatus } from '../../enums/patient-payment-status.enum';
+import { PatientStatus } from '../../enums/patient-payment-status.enum';
 
 export class CreatePatientDto {
   @ApiProperty()
@@ -8,8 +14,13 @@ export class CreatePatientDto {
   @IsNotEmpty()
   idPersona: string;
 
-  @ApiProperty({ enum: PatientPaymentStatus })
-  @IsEnum(PatientPaymentStatus)
+  @ApiProperty({ enum: PatientStatus })
+  @IsEnum(PatientStatus)
   @IsNotEmpty()
-  estadoPago: PatientPaymentStatus;
+  estado: PatientStatus;
+
+  @ApiProperty({ required: false })
+  @IsString()
+  @IsOptional()
+  nota?: string;
 }

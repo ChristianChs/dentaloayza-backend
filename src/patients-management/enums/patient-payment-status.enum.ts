@@ -1,6 +1,4 @@
-export enum PatientPaymentStatus {
-  PAGADO = 'pagado',
-  PENDIENTE = 'pendiente',
-  ATRASADO = 'atrasado',
-  EXONERADO = 'exonerado',
+export enum PatientStatus {
+  ACTIVO = 'Activo',
+  INACTIVO = 'Inactivo',
 }

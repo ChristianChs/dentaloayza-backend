@@ -17,7 +17,6 @@ import { ApiResponse } from '@nestjs/swagger';
 import { ApiAuth } from 'src/common/decorators/api-auth.decorator';
 
 @Controller('specialist')
-@ApiAuth()
 export class SpecialistController {
   constructor(private readonly specialistService: SpecialistService) {}
 

@@ -17,7 +17,6 @@ import { PersonResponseDto } from './dto';
 import { ApiAuth } from 'src/common/decorators/api-auth.decorator';
 
 @Controller('person')
-@ApiAuth()
 export class PersonController {
   constructor(private readonly personService: PersonService) {}
 
