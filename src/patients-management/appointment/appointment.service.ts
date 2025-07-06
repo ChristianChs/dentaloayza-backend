@@ -71,7 +71,12 @@ export class AppointmentService {
   async findOne(id: string): Promise<Appointment> {
     const appointment = await this.appointmentRepository.findOne({
       where: { idCita: id },
-      relations: ['patient', 'specialist', 'appointmentReason'],
+      relations: [
+        'patient',
+        'specialist',
+        'appointmentReason',
+        'specialist.persona',
+      ],
     });
     if (!appointment) {
       throw new NotFoundException(`Cita con ID ${id} no encontrada`);
@@ -79,6 +84,26 @@ export class AppointmentService {
     return appointment;
   }
 
+  async findByPatient(patientId: string): Promise<Appointment[]> {
+    const appointments = await this.appointmentRepository.find({
+      where: { idPaciente: patientId },
+      relations: [
+        'patient',
+        'patient.persona',
+        'specialist',
+        'specialist.persona',
+        'appointmentReason',
+      ],
+    });
+
+    if (!appointments || appointments.length === 0) {
+      throw new NotFoundException(
+        `No se encontraron citas para el paciente con ID ${patientId}`,
+      );
+    }
+
+    return appointments;
+  }
   async update(
     id: string,
     updateAppointmentDto: UpdateAppointmentDto,

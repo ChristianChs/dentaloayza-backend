@@ -53,6 +53,18 @@ export class AppointmentController {
     return this.appointmentService.getCombos();
   }
 
+  @Get('by-patient/:id')
+  @ApiOperation({ summary: 'Obtiene citas por ID de paciente' })
+  @ApiParam({ name: 'id', type: String })
+  @ApiResponse({ status: HttpStatus.OK, type: [Appointment] })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: 'Cita no encontrada.',
+  })
+  findByPatient(@Param('id') id: string) {
+    return this.appointmentService.findByPatient(id);
+  }
+
   @Get(':id')
   @ApiOperation({ summary: 'Obtiene una cita por su ID' })
   @ApiParam({ name: 'id', type: String })
