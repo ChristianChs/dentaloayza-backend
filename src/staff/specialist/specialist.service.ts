@@ -25,11 +25,20 @@ export class SpecialistService {
   ) {}
 
   async findAll() {
-    const data = await this.specialistRepository.find({
-      relations: ['persona', 'especialidad'],
-    });
+    const data = await this.specialistRepository
+      .createQueryBuilder('specialist')
+      .leftJoinAndSelect('specialist.persona', 'persona')
+      .leftJoinAndSelect('specialist.especialidad', 'especialidad')
+      .leftJoin('specialist.user', 'user')
+      .addSelect('user.rol')
+      .getMany();
 
-    return plainToInstance(Specialist, data);
+    const result = data.map((specialist) => ({
+      ...specialist,
+      rol: specialist.user?.rol || null,
+      user: undefined,
+    }));
+    return plainToInstance(Specialist, result);
   }
 
   async findOne(uuid: string) {

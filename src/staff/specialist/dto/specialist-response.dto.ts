@@ -29,6 +29,10 @@ export class SpecialistResponseDto {
 
   @ApiProperty()
   @Expose()
+  rol: string;
+
+  @ApiProperty()
+  @Expose()
   @Type(() => PersonResponseDto)
   persona: PersonResponseDto;
 }
