@@ -1,10 +1,4 @@
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  ManyToOne,
-  JoinColumn,
-} from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, JoinColumn } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 import { AntecedentPatient } from '../../antecedent-patient/entities/antecedent-patient.entity';
 
@@ -34,11 +28,6 @@ export class AntecedentDetail {
   @Column({ type: 'varchar', length: 255, nullable: true })
   descripcion: string;
 
-  @ManyToOne(
-    () => AntecedentPatient,
-    (antecedentPatient) => antecedentPatient.antecedentDetails,
-    { onDelete: 'CASCADE' },
-  )
   @JoinColumn({
     name: 'idAntecedentePaciente',
     referencedColumnName: 'idAntecedentePaciente',

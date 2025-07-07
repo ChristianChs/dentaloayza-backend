@@ -2,45 +2,63 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
+  CreateDateColumn,
   ManyToOne,
   JoinColumn,
-  OneToMany,
 } from 'typeorm';
-import { ApiProperty } from '@nestjs/swagger';
 import { Patient } from '../../patient/entities/patient.entity';
-import { Antecedente } from '../../../catalog/antecedent/entities/antecedent.entity';
-import { AntecedentDetail } from '../../antecedent-detail/entities/antecedent-detail.entity';
-
 @Entity('antecedentepaciente')
 export class AntecedentPatient {
-  @ApiProperty()
   @PrimaryGeneratedColumn('uuid')
   idAntecedentePaciente: string;
 
-  @ApiProperty()
   @Column({ type: 'uuid' })
   idPaciente: string;
 
-  @ApiProperty()
-  @Column({ type: 'uuid' })
-  idAntecedente: string;
-
-  @ApiProperty({ type: () => Patient })
   @ManyToOne(() => Patient, (patient) => patient.antecedentPatients, {
     onDelete: 'CASCADE',
   })
   @JoinColumn({ name: 'idPaciente', referencedColumnName: 'idPaciente' })
   patient: Patient;
 
-  @ApiProperty({ type: () => Antecedente })
-  @ManyToOne(() => Antecedente, { onDelete: 'CASCADE' })
-  @JoinColumn({ name: 'idAntecedente', referencedColumnName: 'uuid' })
-  antecedent: Antecedente;
+  // Ejemplo de campos para tus preguntas (ajusta según tu formulario)
 
-  @ApiProperty({ type: () => [AntecedentDetail] })
-  @OneToMany(
-    () => AntecedentDetail,
-    (antecedentDetail) => antecedentDetail.antecedentPatient,
-  )
-  antecedentDetails: AntecedentDetail[];
+  @Column({ type: 'varchar', length: 10, nullable: true })
+  q1_fuma: string; // "Sí" o "No"
+
+  @Column({ type: 'varchar', length: 10, nullable: true })
+  q2_bebeAlcohol: string;
+
+  @Column({ type: 'varchar', length: 10, nullable: true })
+  q3_alergico: string;
+
+  @Column({ type: 'text', nullable: true })
+  q3_cuales: string; // Detalle de alergias
+
+  @Column({ type: 'varchar', length: 10, nullable: true })
+  q4_embarazada: string;
+
+  @Column('simple-array', { nullable: true })
+  q5_enfermedades: string[];
+
+  @Column({ type: 'text', nullable: true })
+  q6_medicamentos: string;
+
+  @Column({ type: 'text', nullable: true })
+  q7_intervenciones: string;
+
+  @Column({ type: 'varchar', length: 10, nullable: true })
+  q8_sangrado: string;
+
+  @Column({ type: 'varchar', length: 10, nullable: true })
+  q9_diabetes: string;
+
+  @Column({ type: 'varchar', length: 10, nullable: true })
+  q10_hipertension: string;
+
+  @Column({ type: 'text', nullable: true })
+  q11_otro: string;
+
+  @CreateDateColumn()
+  createdAt: Date;
 }

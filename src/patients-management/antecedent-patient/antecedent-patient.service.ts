@@ -2,10 +2,8 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { AntecedentPatient } from './entities/antecedent-patient.entity';
-import { CreateAntecedentPatientDto } from './dto/create-antecedent-patient.dto';
-import { UpdateAntecedentPatientDto } from './dto/update-antecedent-patient.dto';
+import { CreateFullAntecedentPatientDto } from './dto/create-antecedent-patient.dto';
 import { Patient } from '../patient/entities/patient.entity';
-import { Antecedente } from '../../catalog/antecedent/entities/antecedent.entity';
 
 @Injectable()
 export class AntecedentPatientService {
@@ -14,73 +12,69 @@ export class AntecedentPatientService {
     private antecedentPatientRepository: Repository<AntecedentPatient>,
     @InjectRepository(Patient)
     private patientRepository: Repository<Patient>,
-    @InjectRepository(Antecedente)
-    private antecedentRepository: Repository<Antecedente>,
   ) {}
 
   async create(
-    createAntecedentPatientDto: CreateAntecedentPatientDto,
+    dto: CreateFullAntecedentPatientDto,
   ): Promise<AntecedentPatient> {
     const patient = await this.patientRepository.findOneBy({
-      idPaciente: createAntecedentPatientDto.idPaciente,
+      idPaciente: dto.idPaciente,
     });
     if (!patient) {
       throw new NotFoundException(
-        `Paciente con ID ${createAntecedentPatientDto.idPaciente} no encontrado`,
-      );
-    }
-    const antecedent = await this.antecedentRepository.findOneBy({
-      uuid: createAntecedentPatientDto.idAntecedente, // <-- ¡CAMBIO CLAVE AQUÍ! Usa 'uuid'
-    });
-    if (!antecedent) {
-      throw new NotFoundException(
-        `Antecedente con ID ${createAntecedentPatientDto.idAntecedente} no encontrado`,
+        `Paciente con ID ${dto.idPaciente} no encontrado`,
       );
     }
 
-    const newAntecedentPatient = this.antecedentPatientRepository.create(
-      createAntecedentPatientDto,
-    );
-    return await this.antecedentPatientRepository.save(newAntecedentPatient);
+    const entity = this.antecedentPatientRepository.create(dto);
+    entity.patient = patient;
+
+    return await this.antecedentPatientRepository.save(entity);
   }
 
   async findAll(): Promise<AntecedentPatient[]> {
     return await this.antecedentPatientRepository.find({
-      relations: ['patient', 'antecedent'],
+      relations: ['patient'],
     });
   }
 
-  async findOne(id: string): Promise<AntecedentPatient> {
-    const antecedentPatient = await this.antecedentPatientRepository.findOne({
-      where: { idAntecedentePaciente: id },
-      relations: ['patient', 'antecedent'],
+  async findByPaciente(idPaciente: string): Promise<AntecedentPatient> {
+    const antecedente = await this.antecedentPatientRepository.findOne({
+      where: { idPaciente },
+      relations: ['patient'],
     });
-    if (!antecedentPatient) {
+    if (!antecedente) {
       throw new NotFoundException(
-        `Antecedente de paciente con ID ${id} no encontrado`,
+        `No se encontraron antecedentes para el paciente ${idPaciente}`,
       );
     }
-    return antecedentPatient;
+    return antecedente;
+  }
+
+  async findOne(id: string): Promise<AntecedentPatient> {
+    const antecedente = await this.antecedentPatientRepository.findOne({
+      where: { idAntecedentePaciente: id },
+      relations: ['patient'],
+    });
+    if (!antecedente) {
+      throw new NotFoundException(`Antecedente con ID ${id} no encontrado`);
+    }
+    return antecedente;
   }
 
   async update(
     id: string,
-    updateAntecedentPatientDto: UpdateAntecedentPatientDto,
+    dto: Partial<CreateFullAntecedentPatientDto>,
   ): Promise<AntecedentPatient> {
-    const antecedentPatient = await this.findOne(id);
-    this.antecedentPatientRepository.merge(
-      antecedentPatient,
-      updateAntecedentPatientDto,
-    );
-    return await this.antecedentPatientRepository.save(antecedentPatient);
+    const antecedente = await this.findOne(id);
+    this.antecedentPatientRepository.merge(antecedente, dto);
+    return await this.antecedentPatientRepository.save(antecedente);
   }
 
   async remove(id: string): Promise<void> {
     const result = await this.antecedentPatientRepository.delete(id);
     if (result.affected === 0) {
-      throw new NotFoundException(
-        `Antecedente de paciente con ID ${id} no encontrado`,
-      );
+      throw new NotFoundException(`Antecedente con ID ${id} no encontrado`);
     }
   }
 }

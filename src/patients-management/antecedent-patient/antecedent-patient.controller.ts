@@ -17,7 +17,7 @@ import {
   ApiBody,
 } from '@nestjs/swagger';
 import { AntecedentPatientService } from './antecedent-patient.service';
-import { CreateAntecedentPatientDto } from './dto/create-antecedent-patient.dto';
+import { CreateFullAntecedentPatientDto } from './dto/create-antecedent-patient.dto';
 import { UpdateAntecedentPatientDto } from './dto/update-antecedent-patient.dto';
 import { AntecedentPatient } from './entities/antecedent-patient.entity';
 
@@ -31,13 +31,13 @@ export class AntecedentPatientController {
   @Post()
   @HttpCode(HttpStatus.CREATED)
   @ApiOperation({ summary: 'Crea una nueva relación antecedente-paciente' })
-  @ApiBody({ type: CreateAntecedentPatientDto })
+  @ApiBody({ type: CreateFullAntecedentPatientDto })
   @ApiResponse({ status: HttpStatus.CREATED, type: AntecedentPatient })
   @ApiResponse({
     status: HttpStatus.BAD_REQUEST,
     description: 'Datos de entrada inválidos.',
   })
-  create(@Body() createAntecedentPatientDto: CreateAntecedentPatientDto) {
+  create(@Body() createAntecedentPatientDto: CreateFullAntecedentPatientDto) {
     return this.antecedentPatientService.create(createAntecedentPatientDto);
   }
 
