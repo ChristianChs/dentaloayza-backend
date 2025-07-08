@@ -28,9 +28,13 @@ export class Odontogram2Controller {
     return this.odontogramService.findAll();
   }
 
-  @Get('patient/:patientId/detailed')
-  findByPatient(@Param('patientId') patientId: string) {
+  @Get('patient/:patientId/latest')
+  findLatestByPatient(@Param('patientId') patientId: string) {
     return this.odontogramService.findLatestByPatient(patientId);
+  }
+  @Get('patient/:patientId/all')
+  findAllByPatient(@Param('patientId') patientId: string) {
+    return this.odontogramService.findAllByPatient(patientId);
   }
 
   @Patch(':id')

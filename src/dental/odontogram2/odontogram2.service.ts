@@ -27,7 +27,22 @@ export class Odontogram2Service {
     });
   }
 
-  async findLatestByPatient(patientId: string): Promise<Odontogram2[]> {
+  async findLatestByPatient(patientId: string): Promise<Odontogram2> {
+    const latest = await this.odontogramRepository.findOne({
+      where: { patientId },
+      order: { createdAt: 'DESC' },
+    });
+
+    if (!latest) {
+      throw new NotFoundException(
+        `No se encontró un odontograma para el paciente ${patientId}`,
+      );
+    }
+
+    return latest;
+  }
+
+  async findAllByPatient(patientId: string): Promise<Odontogram2[]> {
     return await this.odontogramRepository.find({
       where: { patientId },
       order: { createdAt: 'DESC' },
