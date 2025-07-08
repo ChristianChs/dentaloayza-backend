@@ -15,6 +15,7 @@ import { PatientTag } from '../../patient-tag/entities/patient-tag.entity';
 import { PatientStatus } from '../../enums/patient-payment-status.enum';
 import { Budget } from 'src/payments/budget/entities/budget.entity';
 import { Payment } from 'src/payments/payment/entities/payment.entity';
+import { Odontogram2 } from 'src/dental/odontogram2/entities/odontogram2.entity';
 
 @Entity('paciente')
 export class Patient {
@@ -56,6 +57,10 @@ export class Patient {
     (antecedentPatient) => antecedentPatient.patient,
   )
   antecedentPatients: AntecedentPatient[];
+
+  @ApiProperty({ type: () => [Odontogram2] })
+  @OneToMany(() => Odontogram2, (odontograma) => odontograma.patient)
+  odontogramas: Odontogram2[];
 
   @ApiProperty({ type: () => [Appointment] })
   @OneToMany(() => Appointment, (appointment) => appointment.patient)

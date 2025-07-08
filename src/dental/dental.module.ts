@@ -31,9 +31,12 @@ import { CariesDetailDefinition } from './master-data/entities/caries-detail-def
 import { MasterDataService } from './master-data/master-data.service';
 import { MasterDataController } from './master-data/master-data.controller';
 
-// Odontogram View Imports
 import { OdontogramViewController } from './odontogram/odontogram-view/odontogram-view.controller';
 import { OdontogramViewService } from './odontogram/odontogram-view/odontogram-view.service';
+
+import { Odontogram2 } from './odontogram2/entities/odontogram2.entity';
+import { Odontogram2Service } from './odontogram2/odontogram2.service';
+import { Odontogram2Controller } from './odontogram2/odontogram2.controller';
 
 @Module({
   imports: [
@@ -47,6 +50,7 @@ import { OdontogramViewService } from './odontogram/odontogram-view/odontogram-v
       FindingTypeDefinition,
       DentalSurfaceTypeDefinition,
       CariesDetailDefinition,
+      Odontogram2,
     ]),
   ],
   controllers: [
@@ -58,6 +62,7 @@ import { OdontogramViewService } from './odontogram/odontogram-view/odontogram-v
     OdontogramFindingServiceController,
     MasterDataController,
     OdontogramViewController,
+    Odontogram2Controller,
   ],
   providers: [
     DentalStatusService,
@@ -68,6 +73,7 @@ import { OdontogramViewService } from './odontogram/odontogram-view/odontogram-v
     OdontogramFindingServiceService,
     MasterDataService,
     OdontogramViewService,
+    Odontogram2Service,
   ],
   exports: [
     DentalStatusService,
@@ -78,6 +84,7 @@ import { OdontogramViewService } from './odontogram/odontogram-view/odontogram-v
     OdontogramFindingServiceService,
     MasterDataService,
     OdontogramViewService,
+    Odontogram2Service,
   ],
 })
 export class DentalModule {}
