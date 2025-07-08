@@ -1,8 +1,8 @@
 import { IsUUID, IsNotEmpty, IsArray, IsEnum } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
-import { OdontogramType } from '../entities/odontogram2.entity'; // Asegúrate de importar el enum
+import { OdontogramType } from '../entities/odontogram2.entity';
 
-export class CreateOdontogramDto {
+export class CreateOdontogramDto2 {
   @ApiProperty({ description: 'UUID del paciente' })
   @IsUUID()
   @IsNotEmpty()

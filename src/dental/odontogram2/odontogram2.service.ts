@@ -2,8 +2,8 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Odontogram2 } from './entities/odontogram2.entity';
-import { CreateOdontogramDto } from './dto/create-odontogram2.dto';
-import { UpdateOdontogramDto } from './dto/update-odontogram2.dto';
+import { CreateOdontogramDto2 } from './dto/create-odontogram2.dto';
+import { UpdateOdontogramDto2 } from './dto/update-odontogram2.dto';
 
 @Injectable()
 export class Odontogram2Service {
@@ -12,7 +12,7 @@ export class Odontogram2Service {
     private readonly odontogramRepository: Repository<Odontogram2>,
   ) {}
 
-  async create(dto: CreateOdontogramDto): Promise<Odontogram2> {
+  async create(dto: CreateOdontogramDto2): Promise<Odontogram2> {
     const odontograma = this.odontogramRepository.create({
       patientId: dto.patientId,
       data: dto.data,
@@ -57,7 +57,7 @@ export class Odontogram2Service {
     });
   }
 
-  async update(id: string, dto: UpdateOdontogramDto): Promise<Odontogram2> {
+  async update(id: string, dto: UpdateOdontogramDto2): Promise<Odontogram2> {
     const odontograma = await this.odontogramRepository.findOneBy({ id });
     if (!odontograma) {
       throw new NotFoundException(`Odontograma con ID ${id} no encontrado`);
