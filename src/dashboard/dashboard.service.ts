@@ -77,14 +77,14 @@ export class DashboardService {
     const ultimasCitas = await this.appointmentRepo.find({
       order: { fechaCita: 'DESC' },
       take: 5,
-      relations: ['paciente'],
+      relations: ['patient'],
     });
 
     ultimasCitas.forEach((cita) => {
       actividades.push({
         tipo: 'Cita',
         estado: cita.estadoCita,
-        paciente: cita.patient?.persona?.nombre || '',
+        patient: cita.patient?.persona?.nombre || '',
         fecha: cita.fechaCita,
       });
     });

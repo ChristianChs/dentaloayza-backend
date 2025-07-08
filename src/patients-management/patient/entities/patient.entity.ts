@@ -16,10 +16,10 @@ import { PatientStatus } from '../../enums/patient-payment-status.enum';
 import { Budget } from 'src/payments/budget/entities/budget.entity';
 import { Payment } from 'src/payments/payment/entities/payment.entity';
 import { Odontogram2 } from 'src/dental/odontogram2/entities/odontogram2.entity';
-import { BaseEntity } from 'src/common/entities/base.entity';
+import { BaseEntity2 } from 'src/common/entities/base2.entity';
 
 @Entity('paciente')
-export class Patient extends BaseEntity {
+export class Patient extends BaseEntity2 {
   @ApiProperty()
   @PrimaryGeneratedColumn('uuid')
   idPaciente: string;
