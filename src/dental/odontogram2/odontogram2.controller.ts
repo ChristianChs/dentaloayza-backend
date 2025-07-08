@@ -10,8 +10,8 @@ import {
   HttpCode,
 } from '@nestjs/common';
 import { Odontogram2Service } from './odontogram2.service';
-import { CreateOdontogramDto } from './dto/create-odontogram2.dto';
-import { UpdateOdontogramDto } from './dto/update-odontogram2.dto';
+import { CreateOdontogramDto2 } from './dto/create-odontogram2.dto';
+import { UpdateOdontogramDto2 } from './dto/update-odontogram2.dto';
 import { ApiOperation, ApiParam, ApiResponse } from '@nestjs/swagger';
 
 @Controller('odontogram-view2')
@@ -20,7 +20,7 @@ export class Odontogram2Controller {
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  create(@Body() dto: CreateOdontogramDto) {
+  create(@Body() dto: CreateOdontogramDto2) {
     return this.odontogramService.create(dto);
   }
 
@@ -48,7 +48,7 @@ export class Odontogram2Controller {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() dto: UpdateOdontogramDto) {
+  update(@Param('id') id: string, @Body() dto: UpdateOdontogramDto2) {
     return this.odontogramService.update(id, dto);
   }
 
