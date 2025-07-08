@@ -10,6 +10,7 @@ export class AntecedentPatientService {
   constructor(
     @InjectRepository(AntecedentPatient)
     private antecedentPatientRepository: Repository<AntecedentPatient>,
+
     @InjectRepository(Patient)
     private patientRepository: Repository<Patient>,
   ) {}
@@ -20,6 +21,7 @@ export class AntecedentPatientService {
     const patient = await this.patientRepository.findOneBy({
       idPaciente: dto.idPaciente,
     });
+
     if (!patient) {
       throw new NotFoundException(
         `Paciente con ID ${dto.idPaciente} no encontrado`,
@@ -29,11 +31,11 @@ export class AntecedentPatientService {
     const entity = this.antecedentPatientRepository.create(dto);
     entity.patient = patient;
 
-    return await this.antecedentPatientRepository.save(entity);
+    return this.antecedentPatientRepository.save(entity);
   }
 
   async findAll(): Promise<AntecedentPatient[]> {
-    return await this.antecedentPatientRepository.find({
+    return this.antecedentPatientRepository.find({
       relations: ['patient'],
     });
   }
@@ -43,11 +45,13 @@ export class AntecedentPatientService {
       where: { idPaciente },
       relations: ['patient'],
     });
+
     if (!antecedente) {
       throw new NotFoundException(
         `No se encontraron antecedentes para el paciente ${idPaciente}`,
       );
     }
+
     return antecedente;
   }
 
@@ -56,9 +60,11 @@ export class AntecedentPatientService {
       where: { idAntecedentePaciente: id },
       relations: ['patient'],
     });
+
     if (!antecedente) {
       throw new NotFoundException(`Antecedente con ID ${id} no encontrado`);
     }
+
     return antecedente;
   }
 
@@ -68,11 +74,12 @@ export class AntecedentPatientService {
   ): Promise<AntecedentPatient> {
     const antecedente = await this.findOne(id);
     this.antecedentPatientRepository.merge(antecedente, dto);
-    return await this.antecedentPatientRepository.save(antecedente);
+    return this.antecedentPatientRepository.save(antecedente);
   }
 
   async remove(id: string): Promise<void> {
     const result = await this.antecedentPatientRepository.delete(id);
+
     if (result.affected === 0) {
       throw new NotFoundException(`Antecedente con ID ${id} no encontrado`);
     }
