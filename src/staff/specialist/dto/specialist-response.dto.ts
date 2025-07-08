@@ -41,6 +41,10 @@ export class SpecialistResponseDto {
 
   @ApiProperty()
   @Expose()
+  uuidUser: string;
+
+  @ApiProperty()
+  @Expose()
   @Type(() => PersonResponseDto)
   persona: PersonResponseDto;
 }
