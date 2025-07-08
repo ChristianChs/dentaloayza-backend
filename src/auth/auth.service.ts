@@ -94,7 +94,9 @@ export class AuthService {
     const user = await this.userRepository.findOneBy({ uuid });
     if (!user)
       throw new NotFoundException(`Usuario con ID ${uuid} no encontrado`);
-
+    if (updateUserDto.password) {
+      updateUserDto.password = bcrypt.hashSync(updateUserDto.password, 10);
+    }
     Object.assign(user, updateUserDto);
     try {
       await this.userRepository.save(user);
