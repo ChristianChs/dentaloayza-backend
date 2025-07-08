@@ -49,8 +49,8 @@ export class CreatePersonDto {
   direccion: string;
 
   @ApiProperty()
-  @Matches(/^\d{9}$/, {
-    message: 'El teléfono debe contener 9 dígitos numéricos',
+  @Matches(/^\d{7,15}$/, {
+    message: 'El teléfono debe contener entre 7 y 15 dígitos numéricos',
   })
   telefono: string;
 }
