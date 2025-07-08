@@ -64,6 +64,20 @@ export class AntecedentPatientController {
     return this.antecedentPatientService.findOne(id);
   }
 
+  @Get('by-patient/:idPaciente')
+  @ApiOperation({
+    summary: 'Obtiene el antecedente médico de un paciente por su ID',
+  })
+  @ApiParam({ name: 'idPaciente', type: String })
+  @ApiResponse({ status: HttpStatus.OK, type: AntecedentPatient })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: 'No se encontró el antecedente del paciente.',
+  })
+  findByPaciente(@Param('idPaciente') idPaciente: string) {
+    return this.antecedentPatientService.findByPaciente(idPaciente);
+  }
+
   @Patch(':id')
   @ApiOperation({
     summary: 'Actualiza una relación antecedente-paciente existente',
