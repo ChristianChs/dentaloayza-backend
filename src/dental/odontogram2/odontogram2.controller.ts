@@ -12,6 +12,7 @@ import {
 import { Odontogram2Service } from './odontogram2.service';
 import { CreateOdontogramDto } from './dto/create-odontogram2.dto';
 import { UpdateOdontogramDto } from './dto/update-odontogram2.dto';
+import { ApiOperation, ApiParam, ApiResponse } from '@nestjs/swagger';
 
 @Controller('odontogram-view2')
 export class Odontogram2Controller {
@@ -26,6 +27,15 @@ export class Odontogram2Controller {
   @Get()
   findAll() {
     return this.odontogramService.findAll();
+  }
+
+  @Get(':id')
+  @ApiOperation({ summary: 'Obtiene un odontograma por su ID' })
+  @ApiParam({ name: 'id', description: 'UUID del odontograma' })
+  @ApiResponse({ status: 200, description: 'Odontograma encontrado' })
+  @ApiResponse({ status: 404, description: 'Odontograma no encontrado' })
+  findOne(@Param('id') id: string) {
+    return this.odontogramService.findOneById(id);
   }
 
   @Get('patient/:patientId/latest')

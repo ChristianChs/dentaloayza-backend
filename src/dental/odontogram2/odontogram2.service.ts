@@ -41,6 +41,13 @@ export class Odontogram2Service {
 
     return latest;
   }
+  async findOneById(id: string): Promise<Odontogram2> {
+    const odontograma = await this.odontogramRepository.findOneBy({ id });
+    if (!odontograma) {
+      throw new NotFoundException(`Odontograma con ID ${id} no encontrado`);
+    }
+    return odontograma;
+  }
 
   async findAllByPatient(patientId: string): Promise<Odontogram2[]> {
     return await this.odontogramRepository.find({
