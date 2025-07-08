@@ -30,7 +30,7 @@ export class SpecialistService {
       .leftJoinAndSelect('specialist.persona', 'persona')
       .leftJoinAndSelect('specialist.especialidad', 'especialidad')
       .leftJoin('specialist.user', 'user')
-      .addSelect(['user.rol', 'user.email', 'user.username'])
+      .addSelect(['user.rol', 'user.email', 'user.username', 'user.uuid'])
       .getMany();
 
     const result = data.map((specialist) => ({
@@ -38,6 +38,7 @@ export class SpecialistService {
       rol: specialist.user?.rol || null,
       email: specialist.user?.email || null,
       user: specialist.user?.username || null,
+      uuidUser: specialist.user?.uuid || null,
     }));
     return plainToInstance(Specialist, result);
   }

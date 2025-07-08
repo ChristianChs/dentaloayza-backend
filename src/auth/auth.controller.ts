@@ -1,6 +1,6 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Param, Patch, Post } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { LoginUserDto, CreateUserDto } from './dto';
+import { LoginUserDto, CreateUserDto, UpdateUserDto } from './dto';
 import { Auth } from './decorators/auth.decorator';
 import { ApiBearerAuth, ApiResponse } from '@nestjs/swagger';
 import { User } from './entities';
@@ -40,6 +40,14 @@ export class AuthController {
   @ApiResponse({ status: 500, description: 'Internal server error.' })
   login(@Body() loginUserDto: LoginUserDto) {
     return this.authService.login(loginUserDto);
+  }
+
+  @Patch('update-user/:uuid')
+  updateUser(
+    @Param('uuid') uuid: string,
+    @Body() updateUserDto: UpdateUserDto,
+  ) {
+    return this.authService.updateUser(uuid, updateUserDto);
   }
 
   // @Get('roles')

@@ -89,6 +89,21 @@ export class AuthService {
       token: this.getJwtToken({ id: user.uuid }),
     };
   }
+
+  async updateUser(uuid: string, updateUserDto: any) {
+    const user = await this.userRepository.findOneBy({ uuid });
+    if (!user)
+      throw new NotFoundException(`Usuario con ID ${uuid} no encontrado`);
+
+    Object.assign(user, updateUserDto);
+    try {
+      await this.userRepository.save(user);
+      delete user.password;
+      return plainToInstance(User, user);
+    } catch (error) {
+      this.handleExceptionDb(error);
+    }
+  }
   // SECCIÓN ROLES
   async getRoles() {
     const roles = await this.rolRepository.find();
