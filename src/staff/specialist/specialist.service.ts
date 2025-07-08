@@ -91,10 +91,16 @@ export class SpecialistService {
   async update(uuid: string, updateSpecialistDto: UpdateSpecialistDto) {
     const specialist = await this.findOne(uuid);
 
-    const { uuidPersona, idEspecialidad, fechaIngreso } = updateSpecialistDto;
+    const {
+      uuidPersona,
+      idEspecialidad,
+      fechaIngreso,
+      isActive = undefined,
+    } = updateSpecialistDto;
 
     let personExist = specialist.persona;
     let specialtyExist = specialist.especialidad;
+    let isActiveValue = isActive;
 
     if (uuidPersona) {
       personExist = await this.personService.findOne(uuidPersona);
@@ -102,16 +108,26 @@ export class SpecialistService {
     if (idEspecialidad) {
       specialtyExist = await this.specialtyService.findOne(idEspecialidad);
     }
+    if (isActive === undefined) {
+      console.log('entro aqui ');
+      isActiveValue = specialist.isActive;
+    }
     try {
       await this.specialistRepository.update(
         { uuid },
-        { persona: personExist, especialidad: specialtyExist, fechaIngreso },
+        {
+          persona: personExist,
+          especialidad: specialtyExist,
+          fechaIngreso,
+          isActive: isActiveValue,
+        },
       );
       return {
         ...specialist,
         persona: personExist,
         especialidad: specialtyExist,
         fechaIngreso,
+        isActive: isActiveValue,
       };
     } catch (error) {
       this.handleExceptionDb(error);
