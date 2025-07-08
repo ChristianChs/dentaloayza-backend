@@ -33,6 +33,14 @@ export class SpecialistResponseDto {
 
   @ApiProperty()
   @Expose()
+  email: string;
+
+  @ApiProperty()
+  @Expose()
+  user: string;
+
+  @ApiProperty()
+  @Expose()
   @Type(() => PersonResponseDto)
   persona: PersonResponseDto;
 }
