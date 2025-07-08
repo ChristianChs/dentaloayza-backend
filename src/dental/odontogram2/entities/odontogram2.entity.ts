@@ -8,6 +8,11 @@ import {
 } from 'typeorm';
 import { Patient } from '../../../patients-management/patient/entities/patient.entity';
 
+export enum OdontogramType {
+  PERMANENTE = 'Permanente',
+  PRIMARIA = 'Primaria',
+}
+
 @Entity('odontograma2')
 export class Odontogram2 {
   @PrimaryGeneratedColumn('uuid')
@@ -24,6 +29,12 @@ export class Odontogram2 {
 
   @Column('json')
   data: any;
+
+  @Column({
+    type: 'enum',
+    enum: OdontogramType,
+  })
+  type: OdontogramType;
 
   @CreateDateColumn()
   createdAt: Date;

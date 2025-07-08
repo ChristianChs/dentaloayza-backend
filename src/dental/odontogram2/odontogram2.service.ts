@@ -16,6 +16,7 @@ export class Odontogram2Service {
     const odontograma = this.odontogramRepository.create({
       patientId: dto.patientId,
       data: dto.data,
+      type: dto.type,
     });
 
     return await this.odontogramRepository.save(odontograma);
