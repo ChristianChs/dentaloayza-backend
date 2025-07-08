@@ -65,7 +65,7 @@ export class Person extends BaseEntity {
 
   @ApiProperty()
   @Column('varchar', {
-    length: 9,
+    length: 15,
   })
   telefono: string;
 
