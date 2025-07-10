@@ -81,4 +81,4 @@ yarn start:dev
 El proyecto usa Swagger para generar documentación interactiva de la API.
 
 Una vez que el servidor esté corriendo, puedes acceder a Swagger en:
-🔗 http://localhost:3000/api
+🔗 http://localhost:3001/api/docs
