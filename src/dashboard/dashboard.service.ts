@@ -4,7 +4,7 @@ import { Appointment } from '../patients-management/appointment/entities/appoint
 import { Patient } from '../patients-management/patient/entities/patient.entity';
 import { Payment } from '../payments/payment/entities/payment.entity';
 import { Budget } from '../payments/budget/entities/budget.entity';
-import { Repository, Between } from 'typeorm';
+import { Repository, Between, Like } from 'typeorm';
 import { PatientStatus } from '../patients-management/enums/patient-payment-status.enum';
 @Injectable()
 export class DashboardService {
@@ -35,13 +35,16 @@ export class DashboardService {
       999,
     );
 
-    const today = new Date().toISOString().split('T')[0]; // "2025-07-06"
-    const todayStart = `${today} 00:00:00`;
-    const todayEnd = `${today} 23:59:59`;
+    // const today = new Date().toISOString().split('T')[0]; // "2025-07-06"
+    // const todayStart = `${today} 00:00:00`;
+    // const todayEnd = `${today} 23:59:59`;
+
+    const peruDate = new Date(now.getTime() - 5 * 60 * 60 * 1000);
+    const today = peruDate.toISOString().split('T')[0];
 
     const citasHoy = await this.appointmentRepo.count({
       where: {
-        fechaCita: Between(todayStart, todayEnd),
+        fechaCita: Like(`${today}%`),
       },
     });
 
