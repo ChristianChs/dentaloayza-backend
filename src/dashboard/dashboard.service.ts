@@ -54,7 +54,10 @@ export class DashboardService {
         createdAt: Between(monthStart, monthEnd),
       },
     });
-    const ingresosMes = pagosMes.reduce((sum, p) => sum + p.monto, 0);
+    const ingresosMes = pagosMes.reduce(
+      (sum, p) => sum + Number(p.monto || 0),
+      0,
+    );
 
     const presupuestosPendientes = await this.budgetRepo.count({
       where: { estado: 'CREADO' },
