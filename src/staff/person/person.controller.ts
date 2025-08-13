@@ -16,6 +16,7 @@ import { plainToInstance } from 'class-transformer';
 import { PersonResponseDto } from './dto';
 import { ApiAuth } from 'src/common/decorators/api-auth.decorator';
 
+@ApiAuth()
 @Controller('person')
 export class PersonController {
   constructor(private readonly personService: PersonService) {}
